@@ -501,7 +501,7 @@ public class Principal {
 
 			if(ind!=null){
 				ind.preencherObjetivosMaxMin(maxmimObjetivos);
-				String frontFile = caminhoDir + "/" + front + "_fronteira.txt";
+				String frontFile = caminhoDir + "/" + front + ".txt";
 				//String frontFile = caminhoDir + "/" + front;
 				System.out.println("Indicador: " + ind.indicador);
 				ind.calcularIndicadorArquivo(frontFile);
@@ -605,7 +605,7 @@ public class Principal {
 	public static ArrayList<PontoFronteira> loadParetoFrontFile(String file, int objetivo){
 		ArrayList<PontoFronteira> pftrue = new ArrayList<PontoFronteira>();
 		try{
-			BufferedReader buff = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/pareto/" +file));
+			BufferedReader buff = new BufferedReader(new FileReader(file));
 			while(buff.ready()){
 				String linha = buff.readLine().trim();
 				if(!linha.equals("")){
