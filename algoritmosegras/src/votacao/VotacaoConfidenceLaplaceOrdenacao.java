@@ -9,21 +9,20 @@ import regra.Regra;
 import weka.core.Instance;
 
 /**
- * Classe que implementa a votação por confiança com a seleção das regras através do valor de Laplace. Implementação
- * diferente, as regras são ordenadas e depois selecionadas.
- * @author André de Carvalho
+ * Classe que implementa a votaï¿½ï¿½o por confianï¿½a com a seleï¿½ï¿½o das regras atravï¿½s do valor de Laplace. Implementaï¿½ï¿½o
+ * diferente, as regras sï¿½o ordenadas e depois selecionadas.
+ * @author Andrï¿½ de Carvalho
  *
  */
 public class VotacaoConfidenceLaplaceOrdenacao extends Votacao {
 
-	
 	public VotacaoConfidenceLaplaceOrdenacao(){
-		System.out.println("Votação: Confidence Laplace com ordenação");
+		System.out.println("Votaï¿½ï¿½o: Confidence Laplace com ordenaï¿½ï¿½o");
 	}
 	
 	/**
-	 * Método que restringe a votação à somente k regras por classe, onde k representa o
-	 * número de classes do problema. Inicialmente ordena todas as regras, depois executa a votação.
+	 * Mï¿½todo que restringe a votaï¿½ï¿½o ï¿½ somente k regras por classe, onde k representa o
+	 * nï¿½mero de classes do problema. Inicialmente ordena todas as regras, depois executa a votaï¿½ï¿½o.
 	 */
 	public double votacao(ArrayList<Regra> regras, Instance exemplo,
 			String classePositiva) {
@@ -41,7 +40,7 @@ public class VotacaoConfidenceLaplaceOrdenacao extends Votacao {
 		Collections.sort(regrasVotacaoPositiva, comp);
 		Collections.sort(regrasVotacaoNegativa, comp);
 		
-		//Votação das k melhores regras para cada classe
+		//Votaï¿½ï¿½o das k melhores regras para cada classe
 		
 		positivo = votarConfidenceMedia(regrasVotacaoPositiva, k);
 		negativo = votarConfidenceMedia(regrasVotacaoNegativa, k);
@@ -84,54 +83,4 @@ public class VotacaoConfidenceLaplaceOrdenacao extends Votacao {
 		return classesMaisVotadas;
 	}
 
-	/*METODO ANTIGO
-	public double votacaotemp(ArrayList<Regra> regras, Instance exemplo,
-			String classePositiva) {
-		double positivo = 0;
-		double negativo = 0;
-		
-		ArrayList<Regra> regrasVotacaoPositiva = new ArrayList<Regra>();
-		ArrayList<Regra> regrasVotacaoNegativa = new ArrayList<Regra>();
-		double k = exemplo.classAttribute().numValues();
-		
-		obterRegrasVotam(regrasVotacaoPositiva, regrasVotacaoNegativa, regras, exemplo, classePositiva);
-		
-		ComparatorRegraLaplace comp = new ComparatorRegraLaplace();
-		
-		Collections.sort(regrasVotacaoPositiva, comp);
-		Collections.sort(regrasVotacaoNegativa, comp);
-		
-		
-		//Votação das k melhores regras para cada classe
-		
-
-		for (int i = 0; i<k;i++) {
-			if(i<regrasVotacaoPositiva.size()){
-				int indice = (regrasVotacaoPositiva.size()-1) - i;
-				Regra regraPos = regrasVotacaoPositiva.get(indice);
-				regraPos.votou = true;
-				positivo += regraPos.getConfidence();
-			}
-			
-			if(i<regrasVotacaoNegativa.size()){
-				int indice = (regrasVotacaoNegativa.size()-1) - i;
-				Regra regraNeg = regrasVotacaoNegativa.get(indice);
-				regraNeg.votou = true;
-				negativo += regraNeg.getConfidence();
-			}
-		}
-		
-		if(regrasVotacaoPositiva.size()<k && regrasVotacaoPositiva.size()!=0)
-			positivo = positivo/regrasVotacaoPositiva.size();
-		else
-			positivo = positivo/k;
-		
-		if(regrasVotacaoNegativa.size()<k && regrasVotacaoNegativa.size()!=0)
-			negativo = negativo/regrasVotacaoNegativa.size();
-		else
-			negativo = negativo/k;
-		
-		return positivo-negativo;
-	}
-	*/
 }

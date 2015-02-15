@@ -9,18 +9,18 @@ import regra.Regra;
 import weka.core.Instance;
 
 /**
- * Classe que implementa a votação simples, com a adição de um ponto para cada voto da regra.
- * @author André de Carvalho
+ * Classe que implementa a votaï¿½ï¿½o simples, com a adiï¿½ï¿½o de um ponto para cada voto da regra.
+ * @author Andrï¿½ de Carvalho
  *
  */
 public class VotacaoSimples extends Votacao {
 
 	public VotacaoSimples(){
-		System.out.println("Votação: Simples");
+		System.out.println("Votaï¿½ï¿½o: Simples");
 	}
 	
 	/**
-	 * Método de votação simples. Todas regras votam e um ponto para cada voto.
+	 * Mï¿½todo de votaï¿½ï¿½o simples. Todas regras votam e um ponto para cada voto.
 	 */
 	public double votacao(ArrayList<Regra> regras, Instance exemplo, String classePositiva) {
 		int positivo = 0;
@@ -42,7 +42,7 @@ public class VotacaoSimples extends Votacao {
 	}
 
 	/**
-	 * Método de votação simples multiclasse. Todas regras votam e um ponto para cada voto.
+	 * MÃ©todo de votaÃ§Ã£o simples multiclasse. Todas regras votam e um ponto para cada voto.
 	 * @author Matheus Rosendo
 	 * @return a classe mais votada pelo conjunto de regras 
 	 */
@@ -50,7 +50,7 @@ public class VotacaoSimples extends Votacao {
 		int[] classePontuacao = new int[classes.size()];
 		int classeMaisVotada = 0;
 		
-		ArrayList<Integer> classesMaisVotadas = new ArrayList<Integer>();//será apenas uma em caso de não haver empate
+		ArrayList<Integer> classesMaisVotadas = new ArrayList<Integer>();//serï¿½ apenas uma em caso de nï¿½o haver empate
 		
 		for (Iterator<Regra> iter = regras.iterator(); iter.hasNext();) {
 			Regra regra = (Regra) iter.next();
