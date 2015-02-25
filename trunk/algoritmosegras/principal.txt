@@ -1,14 +1,14 @@
-nomebase=bupa_numerico
+nomebase=ADULT
 caminhobase=C:\Users\caique\Desktop\base\
 metodo=pso
 classePositiva=0
 classeNegativa=1
-numFolds=1
+numFolds=10
 numExec=1
 numClasses=2
 auc=sim
 verbose=sim
-votacao=CSA
+votacao=laplace
 objetivos=sens;spec
 geracoes=100
 populacao=500

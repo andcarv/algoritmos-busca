@@ -11,8 +11,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Random;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import objetivo.Especificidade;
@@ -20,21 +18,23 @@ import objetivo.FuncaoObjetivo;
 import objetivo.Laplace;
 import objetivo.Novidade;
 import objetivo.Sensitividade;
+import regra.Atributo;
+import regra.AtributoCombinado;
+import regra.AtributoNominal;
+import regra.AtributoNumerico;
+import regra.Regra;
 import votacao.Votacao;
 import votacao.VotacaoConfidence;
 import votacao.VotacaoConfidenceLaplace;
 import votacao.VotacaoConfidenceLaplaceOrdenacao;
+import votacao.VotacaoEspecificidadeOrdenacao;
+import votacao.VotacaoSensitividadeOrdenacao;
 import votacao.VotacaoSimples;
 import votacao.VotacaoSupportConfidenceOrdenacao;
 import weka.classifiers.meta.Bagging;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
-import regra.Atributo;
-import regra.AtributoNominal;
-import regra.AtributoCombinado;
-import regra.AtributoNumerico;
-import regra.Regra;
 
 /**
  * Classe abstrata que representa um algoritmo de obten��o de regras. Classe
@@ -1770,7 +1770,18 @@ public abstract class ObterRegras {
 					if (votacao.equals("CSA"))
 						this.metodoVotacao = new VotacaoSupportConfidenceOrdenacao();
 					else {
-						this.metodoVotacao = new VotacaoSimples();
+						if (votacao.equals("SS"))
+							/* Sensitividade com Sensitividade */
+							this.metodoVotacao = new VotacaoSensitividadeOrdenacao();
+						else {
+							if (votacao.equals("EE"))
+								/* Especificidade com Especificidade */
+								this.metodoVotacao = new VotacaoEspecificidadeOrdenacao();
+							else {
+								
+								this.metodoVotacao = new VotacaoSimples();
+							}
+						}
 					}
 				}
 			}
