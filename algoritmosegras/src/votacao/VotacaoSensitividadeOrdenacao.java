@@ -16,7 +16,7 @@ public class VotacaoSensitividadeOrdenacao extends Votacao {
 
 	public VotacaoSensitividadeOrdenacao() {
 		
-		System.out.println("Vota��o: Sensitividade com ordena��o");
+		System.out.println("Votaçãoo: Sensitividade com ordenação");
 	}
 
 	/**
