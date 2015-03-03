@@ -400,8 +400,8 @@ public class Principal {
 			solGeral.println(solucao);
 			solExecucao.println(solucao);
 			for(int i = 0; i<m; i++){
-				psFronteiraExec.print(new Double( solucao.objetivos[i])+ "\t");
-				psFronteiraGeral.print(new Double(solucao.objetivos[i]) + "\t");
+				psFronteiraExec.print(new Double( solucao.objetivos[i])+ " ");
+				psFronteiraGeral.print(new Double(solucao.objetivos[i]) + " ");
 				//psFronteiraExec.print(new Double( solucao.objetivos[i]).toString().replace('.', ',')+ "\t");
 				//psFronteiraGeral.print(new Double(solucao.objetivos[i]).toString().replace('.', ',') + "\t");	
 			}
