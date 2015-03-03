@@ -1,6 +1,6 @@
 algorithm = smopso
 problem = dtlz2
-direxec = /home/andrebc/workspace/Manyobjective/
+direxec = /home/andre/workspace/Manyobjective
 m = 3
 k = 10
 max_min = -
