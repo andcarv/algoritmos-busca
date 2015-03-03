@@ -96,7 +96,7 @@ public class SolucaoNumerica extends Solucao {
 		//buff.append("\nVariaveis: ");
 		for (int i = 0; i < variaveis.length; i++) {
 			//buff.append(new Double(variaveis[i]).toString().replace('.', ',') + "\t");
-			buff.append(variaveis[i] + "\t");
+			buff.append(variaveis[i] + " ");
 		}
 		/*buff.append("\n");
 		if(objetivos.length>0){
