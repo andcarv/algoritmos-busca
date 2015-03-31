@@ -18,7 +18,7 @@ import weka.core.Instance;
 
 		public VotacaoEspecificidadeOrdenacao() {
 			
-			System.out.println("Votaï¿½ï¿½o: Especificidade com ordenaï¿½ï¿½o");
+			System.out.println("Votação: Especificidade com Especificidade");
 		}
 
 		/**
