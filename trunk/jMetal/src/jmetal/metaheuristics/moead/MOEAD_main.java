@@ -88,11 +88,12 @@ public class MOEAD_main {
 
 		  //moed-dra objetivo população avaliações execuções
 
-		  int k = 4;
-		  int l = 20;
+		  
 		  int m = new Integer(args[1]);
 		  int pop = new Integer(args[2]);
 		  int aval = new Integer(args[3]);
+		  int k = new Integer(args[5]);
+		  int l = new Integer(args[6]);
 
 
 		  String id = "MOEAD-DRA";
