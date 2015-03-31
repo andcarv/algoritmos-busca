@@ -28,6 +28,7 @@ import votacao.VotacaoConfidence;
 import votacao.VotacaoConfidenceLaplace;
 import votacao.VotacaoConfidenceLaplaceOrdenacao;
 import votacao.VotacaoEspecificidadeOrdenacao;
+import votacao.VotacaoGeral;
 import votacao.VotacaoSensitividadeOrdenacao;
 import votacao.VotacaoSimples;
 import votacao.VotacaoSupportConfidenceOrdenacao;
@@ -38,18 +39,26 @@ import weka.core.Instances;
 
 /**
  * Classe abstrata que representa um algoritmo de obtenï¿½ï¿½o de regras. Classe
- * principal que contï¿½m os mï¿½todos e atributos necessï¿½rios para obtenï¿½ï¿½o das
- * regras.
+ * principal que contï¿½m os mï¿½todos e atributos necessï¿½rios para
+ * obtenï¿½ï¿½o das regras.
  * 
  * @author Andrï¿½ B. de Carvalho
  * 
  */
 public abstract class ObterRegras {
+	private static final int ORDENACAO_CSA = 0;
+	private static final int ORDENACAO_SENSITIVIDADE = 1;
+	private static final int ORDENACAO_ESPECIFICIDADE = 2;
+
+	private static final int VOTACAO_LAPLACE_MEDIA = 10;
+	private static final int VOTACAO_SENSITIVIDADE_MEDIA = 11;
+	private static final int VOTACAO_ESPECIFICIDADE_MEDIA = 12;
 
 	// SortedSet<Double> limiares; // limiares utilizados na construï¿½ï¿½o do
 	// grï¿½fico ROC
 
-	// Arraylist que contï¿½m as regras encontradas pelos algoritmos de obtenï¿½ï¿½o
+	// Arraylist que contï¿½m as regras encontradas pelos algoritmos de
+	// obtenï¿½ï¿½o
 	// de regras.
 	public ArrayList<Regra> regras = null;
 	// Obejto do framework weka que contï¿½m os dados de treinamento
@@ -71,10 +80,12 @@ public abstract class ObterRegras {
 	// execucao (Padrï¿½o Statement )
 	public Votacao metodoVotacao = null;
 
-	// String que contï¿½m o nome da classe positiva da execuï¿½ï¿½o (Ex: positive ou
+	// String que contï¿½m o nome da classe positiva da execuï¿½ï¿½o (Ex:
+	// positive ou
 	// true )
 	public String classePositiva;
-	// String que contï¿½m o nome da classe negativa da execuï¿½ï¿½o (Ex: negative ou
+	// String que contï¿½m o nome da classe negativa da execuï¿½ï¿½o (Ex:
+	// negative ou
 	// false )
 	public String classeNegativa;
 
@@ -84,16 +95,19 @@ public abstract class ObterRegras {
 	// Contï¿½ma informaï¿½ï¿½o do fold corrente
 	public int numFold;
 
-	// Variï¿½vel que indica se vai haver ou nï¿½o impressï¿½o na tela e do log do
+	// Variï¿½vel que indica se vai haver ou nï¿½o impressï¿½o na tela e do log
+	// do
 	// andamento da execuï¿½ï¿½o
 	public boolean verbose;
 
 	// Matriz que contï¿½m o cï¿½lculo do coeficiente de Jaccard de cada regra
 	// encontrada
-	// Utilizado no mï¿½todo para a reduï¿½ï¿½o do nï¿½mero de regras. Nï¿½o implementado
+	// Utilizado no mï¿½todo para a reduï¿½ï¿½o do nï¿½mero de regras. Nï¿½o
+	// implementado
 	public double[][] coeficienteJaccard = null;
 
-	// Array que contï¿½m informaï¿½ï¿½es necessï¿½rias para o cï¿½lculo do coeficiente de
+	// Array que contï¿½m informaï¿½ï¿½es necessï¿½rias para o cï¿½lculo do
+	// coeficiente de
 	// Jaccard
 	public int[][] distribuicaoAtributos = null;
 
@@ -101,8 +115,9 @@ public abstract class ObterRegras {
 	public ArrayList<FuncaoObjetivo> objetivos = null;
 
 	/**
-	 * Mï¿½todo abstrato que deve ser implementado por todo algoritmo de obtenï¿½ï¿½o
-	 * de regras a partir de uma base de dados previamente carregada.
+	 * Mï¿½todo abstrato que deve ser implementado por todo algoritmo de
+	 * obtenï¿½ï¿½o de regras a partir de uma base de dados previamente
+	 * carregada.
 	 * 
 	 * @param cPositiva
 	 *            Indice da classe positiva
@@ -534,8 +549,8 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que preenche a matriz de confusï¿½o multi classe de acordo com as
-	 * instancias e regras passadas por parametro
+	 * Mï¿½todo que preenche a matriz de confusï¿½o multi classe de acordo com
+	 * as instancias e regras passadas por parametro
 	 * 
 	 * @author matheus
 	 * @param confusao
@@ -556,7 +571,8 @@ public abstract class ObterRegras {
 			classesMaisVotadas = metodoVotacao.votacaoMultiClasse(regras, temp,
 					this.classes);
 			classeReal = (int) temp.classValue();
-			// em caso de nï¿½o haver empate pega-se o primeiro e ï¿½nico elemento
+			// em caso de nï¿½o haver empate pega-se o primeiro e ï¿½nico
+			// elemento
 			// do arraylist que ï¿½ a classe eleita
 			if (classesMaisVotadas.size() == 1) {
 				confusao.matriz[classeReal][classesMaisVotadas.get(0)]++;
@@ -596,8 +612,8 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que percorre a base e verifica quantos exemplos nï¿½o foram cobertos
-	 * pelas regras geradas.
+	 * Mï¿½todo que percorre a base e verifica quantos exemplos nï¿½o foram
+	 * cobertos pelas regras geradas.
 	 * 
 	 * @param dadosTeste
 	 */
@@ -620,8 +636,8 @@ public abstract class ObterRegras {
 		}
 
 		System.out.println("Cobertos: " + cobertos);
-		System.out
-				.println("Nï¿½o cobertos: " + (dados.numInstances() - cobertos));
+		System.out.println("Nï¿½o cobertos: "
+				+ (dados.numInstances() - cobertos));
 
 	}
 
@@ -640,8 +656,8 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que calcula a mï¿½dia dos valores do objetivos para todas as regras
-	 * da fronteira
+	 * Mï¿½todo que calcula a mï¿½dia dos valores do objetivos para todas as
+	 * regras da fronteira
 	 * 
 	 * @return
 	 */
@@ -717,8 +733,8 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que gera regras iniciais aleatï¿½rias de acordo com a distribuiï¿½ï¿½o
-	 * dos valores na base
+	 * Mï¿½todo que gera regras iniciais aleatï¿½rias de acordo com a
+	 * distribuiï¿½ï¿½o dos valores na base
 	 * 
 	 * @param atributos
 	 *            Informaï¿½ï¿½es sobre os atributos da base
@@ -767,8 +783,9 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que gera regras iniciais aleatï¿½rias de acordo com a distribuiï¿½ï¿½o
-	 * dos valores na base Utiliza atributos nominais combinados
+	 * Mï¿½todo que gera regras iniciais aleatï¿½rias de acordo com a
+	 * distribuiï¿½ï¿½o dos valores na base Utiliza atributos nominais
+	 * combinados
 	 * 
 	 * @param atributos
 	 *            Informaï¿½ï¿½es sobre os atributos da base
@@ -878,10 +895,11 @@ public abstract class ObterRegras {
 	 * @param dirResultado
 	 *            Nome do diretï¿½rio onde o resultado serï¿½ guardado
 	 * @param AUC
-	 *            Boolean que indica se sï¿½ irï¿½ ocorrer a etapa de avaliaï¿½ï¿½o das
-	 *            regras geradas
+	 *            Boolean que indica se sï¿½ irï¿½ ocorrer a etapa de
+	 *            avaliaï¿½ï¿½o das regras geradas
 	 * @param verbose
-	 *            Indica se haverï¿½ a impressï¿½o do andamento da execuï¿½ï¿½o ou nï¿½o
+	 *            Indica se haverï¿½ a impressï¿½o do andamento da execuï¿½ï¿½o
+	 *            ou nï¿½o
 	 * @param votacao
 	 *            Contï¿½m o nome do mï¿½todod e votaï¿½aï¿½ utilizado (simples,
 	 *            confidence, laplace, ordenacao)
@@ -889,8 +907,8 @@ public abstract class ObterRegras {
 	 *            Indica se as regras finais vï¿½o ser somente as regras que
 	 *            votaram na etapa de teste
 	 * @throws Exception
-	 *             Lanï¿½a execuï¿½ï¿½oc caso haja algum erro nos arquivos de entrada
-	 *             ou saï¿½da.
+	 *             Lanï¿½a execuï¿½ï¿½oc caso haja algum erro nos arquivos de
+	 *             entrada ou saï¿½da.
 	 */
 	public void executarFolds(String nomeBase, String caminhoBase,
 			String nomeMetodo, int numClasses, int cPositiva, int cNegativa,
@@ -906,9 +924,11 @@ public abstract class ObterRegras {
 		dadosExperimento.metodo = nomeMetodo;
 		String caminhoDir = System.getProperty("user.dir");
 
-		// Arquivo de redundï¿½ncia que salva as informaï¿½ï¿½es das execuï¿½ï¿½es durante
+		// Arquivo de redundï¿½ncia que salva as informaï¿½ï¿½es das
+		// execuï¿½ï¿½es durante
 		// o processo.
-		// Evita perder as informaï¿½ï¿½es se houver um problema na execuï¿½ï¿½o.
+		// Evita perder as informaï¿½ï¿½es se houver um problema na
+		// execuï¿½ï¿½o.
 		String caminhoTemp = caminhoDir + "/resultados/" + nomeMetodo + "/"
 				+ dirResultado + "/";
 		File dir = new File(caminhoTemp);
@@ -975,9 +995,11 @@ public abstract class ObterRegras {
 						gravarRegrasArquivo(selecao, regrasFinais, psRegras,
 								regras);
 					} else {
-						// Como nï¿½o hï¿½ cï¿½lculo das medidas, nï¿½o hï¿½ o processod e
+						// Como nï¿½o hï¿½ cï¿½lculo das medidas, nï¿½o hï¿½ o
+						// processod e
 						// votaï¿½ï¿½o.
-						// Assim a opï¿½ï¿½o seleï¿½ï¿½o na gravaï¿½ï¿½o de regras deve ser
+						// Assim a opï¿½ï¿½o seleï¿½ï¿½o na gravaï¿½ï¿½o de
+						// regras deve ser
 						// sempre falsa
 						gravarRegrasArquivo(false, regrasFinais, psRegras,
 								regras);
@@ -1014,11 +1036,12 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que divide a execuï¿½ï¿½o dos em folds em diversas partiï¿½ï¿½es, junta
-	 * todas as regras geradas e testa no arquivo de test. Jï¿½ esta divindo o
-	 * base de treinamento em partes iguais, executando o algoritmo para todas
-	 * as partiï¿½ï¿½es, juntando as regras deixando apenas as regras nï¿½o dominadas.
-	 * Falta a parte do cï¿½lculo da AUC no arquivo de teste.
+	 * Mï¿½todo que divide a execuï¿½ï¿½o dos em folds em diversas
+	 * partiï¿½ï¿½es, junta todas as regras geradas e testa no arquivo de test.
+	 * Jï¿½ esta divindo o base de treinamento em partes iguais, executando o
+	 * algoritmo para todas as partiï¿½ï¿½es, juntando as regras deixando apenas
+	 * as regras nï¿½o dominadas. Falta a parte do cï¿½lculo da AUC no arquivo
+	 * de teste.
 	 * 
 	 * @param nomeBase
 	 * @param caminhoBase
@@ -1044,9 +1067,11 @@ public abstract class ObterRegras {
 		dadosExperimento.metodo = nomeMetodo;
 		String caminhoDir = System.getProperty("user.dir");
 
-		// Arquivo de redundï¿½ncia que salva as informaï¿½ï¿½es das execuï¿½ï¿½es durante
+		// Arquivo de redundï¿½ncia que salva as informaï¿½ï¿½es das
+		// execuï¿½ï¿½es durante
 		// o processo.
-		// Evita perder as informaï¿½ï¿½es se houver um problema na execuï¿½ï¿½o.
+		// Evita perder as informaï¿½ï¿½es se houver um problema na
+		// execuï¿½ï¿½o.
 		String caminhoTemp = caminhoDir + "/resultados/" + nomeMetodo + "/"
 				+ dirResultado + "/";
 		File dir = new File(caminhoTemp);
@@ -1170,9 +1195,11 @@ public abstract class ObterRegras {
 						gravarRegrasArquivo(selecao, regrasFinais, psRegras,
 								regras);
 					} else {
-						// Como nï¿½o hï¿½ cï¿½lculo das medidas, nï¿½o hï¿½ o processod e
+						// Como nï¿½o hï¿½ cï¿½lculo das medidas, nï¿½o hï¿½ o
+						// processod e
 						// votaï¿½ï¿½o.
-						// Assim a opï¿½ï¿½o seleï¿½ï¿½o na gravaï¿½ï¿½o de regras deve ser
+						// Assim a opï¿½ï¿½o seleï¿½ï¿½o na gravaï¿½ï¿½o de
+						// regras deve ser
 						// sempre falsa
 						gravarRegrasArquivo(false, regrasFinais, psRegras,
 								regras);
@@ -1208,11 +1235,12 @@ public abstract class ObterRegras {
 
 	/**
 	 * 
-	 * Mï¿½todo que divide a execuï¿½ï¿½o dos em folds em diversas partiï¿½ï¿½es, junta
-	 * todas as regras geradas e testa no arquivo de test. Jï¿½ esta divindo o
-	 * base de treinamento em partes iguais, executando o algoritmo para todas
-	 * as partiï¿½ï¿½es, juntando as regras deixando apenas as regras nï¿½o dominadas.
-	 * Falta a parte do cï¿½lculo da AUC no arquivo de teste.
+	 * Mï¿½todo que divide a execuï¿½ï¿½o dos em folds em diversas
+	 * partiï¿½ï¿½es, junta todas as regras geradas e testa no arquivo de test.
+	 * Jï¿½ esta divindo o base de treinamento em partes iguais, executando o
+	 * algoritmo para todas as partiï¿½ï¿½es, juntando as regras deixando apenas
+	 * as regras nï¿½o dominadas. Falta a parte do cï¿½lculo da AUC no arquivo
+	 * de teste.
 	 * 
 	 * @deprecated Metodo com problema. A versÃ£o nova do Weka nÃ£o possui o
 	 *             mÃ©todo resampleWithWeights(dadosTreinamentoTotal, new
@@ -1241,9 +1269,11 @@ public abstract class ObterRegras {
 		dadosExperimento.metodo = nomeMetodo;
 		String caminhoDir = System.getProperty("user.dir");
 
-		// Arquivo de redundï¿½ncia que salva as informaï¿½ï¿½es das execuï¿½ï¿½es durante
+		// Arquivo de redundï¿½ncia que salva as informaï¿½ï¿½es das
+		// execuï¿½ï¿½es durante
 		// o processo.
-		// Evita perder as informaï¿½ï¿½es se houver um problema na execuï¿½ï¿½o.
+		// Evita perder as informaï¿½ï¿½es se houver um problema na
+		// execuï¿½ï¿½o.
 		String caminhoTemp = caminhoDir + "/resultados/" + nomeMetodo + "/"
 				+ dirResultado + "/";
 		File dir = new File(caminhoTemp);
@@ -1364,9 +1394,11 @@ public abstract class ObterRegras {
 						gravarRegrasArquivo(selecao, regrasFinais, psRegras,
 								regras);
 					} else {
-						// Como nï¿½o hï¿½ cï¿½lculo das medidas, nï¿½o hï¿½ o processod e
+						// Como nï¿½o hï¿½ cï¿½lculo das medidas, nï¿½o hï¿½ o
+						// processod e
 						// votaï¿½ï¿½o.
-						// Assim a opï¿½ï¿½o seleï¿½ï¿½o na gravaï¿½ï¿½o de regras deve ser
+						// Assim a opï¿½ï¿½o seleï¿½ï¿½o na gravaï¿½ï¿½o de
+						// regras deve ser
 						// sempre falsa
 						gravarRegrasArquivo(false, regrasFinais, psRegras,
 								regras);
@@ -1401,11 +1433,12 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que divide a execuï¿½ï¿½o dos em folds em diversas partiï¿½ï¿½es, junta
-	 * todas as regras geradas e testa no arquivo de test. Jï¿½ esta divindo o
-	 * base de treinamento em partes iguais, executando o algoritmo para todas
-	 * as partiï¿½ï¿½es, juntando as regras deixando apenas as regras nï¿½o dominadas.
-	 * Falta a parte do cï¿½lculo da AUC no arquivo de teste.
+	 * Mï¿½todo que divide a execuï¿½ï¿½o dos em folds em diversas
+	 * partiï¿½ï¿½es, junta todas as regras geradas e testa no arquivo de test.
+	 * Jï¿½ esta divindo o base de treinamento em partes iguais, executando o
+	 * algoritmo para todas as partiï¿½ï¿½es, juntando as regras deixando apenas
+	 * as regras nï¿½o dominadas. Falta a parte do cï¿½lculo da AUC no arquivo
+	 * de teste.
 	 * 
 	 * @param nomeBase
 	 * @param caminhoBase
@@ -1451,9 +1484,11 @@ public abstract class ObterRegras {
 
 		String caminhoDir = System.getProperty("user.dir");
 
-		// Arquivo de redundï¿½ncia que salva as informaï¿½ï¿½es das execuï¿½ï¿½es durante
+		// Arquivo de redundï¿½ncia que salva as informaï¿½ï¿½es das
+		// execuï¿½ï¿½es durante
 		// o processo.
-		// Evita perder as informaï¿½ï¿½es se houver um problema na execuï¿½ï¿½o.
+		// Evita perder as informaï¿½ï¿½es se houver um problema na
+		// execuï¿½ï¿½o.
 		String caminhoTemp = caminhoDir + "/resultados/" + nomeMetodo + "/"
 				+ dirResultado + "/";
 		File dir = new File(caminhoTemp);
@@ -1778,8 +1813,35 @@ public abstract class ObterRegras {
 								/* Especificidade com Especificidade */
 								this.metodoVotacao = new VotacaoEspecificidadeOrdenacao();
 							else {
-								
-								this.metodoVotacao = new VotacaoSimples();
+								if (votacao.equals("CSA-Sens")){
+									System.out.println("Votação: CSA-Sensitividade");
+									this.metodoVotacao = new VotacaoGeral(
+											ORDENACAO_CSA,
+											VOTACAO_SENSITIVIDADE_MEDIA);
+								}else {
+									if (votacao.equals("CSA-Espec"))
+										for(int i=0;i<3;i++){
+										this.metodoVotacao = new VotacaoGeral(
+												ORDENACAO_CSA,
+												VOTACAO_ESPECIFICIDADE_MEDIA); 
+										}
+									else {
+										if (votacao.equals("Sens-Laplace"))
+											this.metodoVotacao = new VotacaoGeral(
+													ORDENACAO_SENSITIVIDADE,
+													VOTACAO_LAPLACE_MEDIA);
+										else {
+											if (votacao.equals("Espec-Laplace"))
+												this.metodoVotacao = new VotacaoGeral(
+														ORDENACAO_ESPECIFICIDADE,
+														VOTACAO_LAPLACE_MEDIA);
+											else {
+
+												this.metodoVotacao = new VotacaoSimples();
+											}
+										}
+									}
+								}
 							}
 						}
 					}
@@ -1902,9 +1964,9 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que recebe um conjunto de regras como parï¿½metro, escolhe as regras
-	 * nï¿½o dominadas e preenche o atributo regras, que sï¿½o as regras finais
-	 * geradas pelo algoritmo.
+	 * Mï¿½todo que recebe um conjunto de regras como parï¿½metro, escolhe as
+	 * regras nï¿½o dominadas e preenche o atributo regras, que sï¿½o as regras
+	 * finais geradas pelo algoritmo.
 	 * 
 	 * @param regrasTemp
 	 *            Regras ï¿½ serem refinadas
@@ -1925,9 +1987,9 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * * @deprecated Mï¿½todo ainda nï¿½o terminado. Mï¿½todo que preenche uma matriz
-	 * com o coeficient de Jaccard de todas as regras Sï¿½ deve ser executado
-	 * quando o array de regras estiver preenchido
+	 * * @deprecated Mï¿½todo ainda nï¿½o terminado. Mï¿½todo que preenche uma
+	 * matriz com o coeficient de Jaccard de todas as regras Sï¿½ deve ser
+	 * executado quando o array de regras estiver preenchido
 	 * 
 	 */
 	public void calcularCoeficienteJaccard() {
@@ -1992,7 +2054,8 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que recebe como parï¿½metros os objetivos da busca e os instï¿½ncia
+	 * Mï¿½todo que recebe como parï¿½metros os objetivos da busca e os
+	 * instï¿½ncia
 	 * 
 	 * @param objetivos
 	 *            Objetivos da busca
@@ -2023,7 +2086,8 @@ public abstract class ObterRegras {
 				}
 			}
 		}
-		// Caso os objetivos passados como parï¿½metro nï¿½o existam ï¿½ definido como
+		// Caso os objetivos passados como parï¿½metro nï¿½o existam ï¿½
+		// definido como
 		// default Sens e Spec
 		if (objetivos.size() == 0) {
 			Sensitividade sens = new Sensitividade();
@@ -2034,8 +2098,8 @@ public abstract class ObterRegras {
 	}
 
 	/**
-	 * Mï¿½todo que percorre a base de dados e para cada atributo nominal preenche
-	 * a distribuiï¿½ï¿½o dos valores
+	 * Mï¿½todo que percorre a base de dados e para cada atributo nominal
+	 * preenche a distribuiï¿½ï¿½o dos valores
 	 */
 	@SuppressWarnings("unchecked")
 	public void preencherDistribuicaoValores() {

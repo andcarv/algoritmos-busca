@@ -1,4 +1,4 @@
-nomebase=ADULT
+nomebase=GERMAN
 caminhobase=C:\Users\caique\Desktop\base\
 metodo=pso
 classePositiva=0
@@ -8,7 +8,7 @@ numExec=1
 numClasses=2
 auc=sim
 verbose=sim
-votacao=laplace
+votacao=CSA-Sens
 objetivos=sens;spec
 geracoes=100
 populacao=500

@@ -45,6 +45,7 @@ public class Principal {
 	ObterRegras algoritmo = null;
 	
 	public static void main(String[] args) {	
+		for(int i=0;i<30;i++){
 		Principal principal = new Principal();
 		try{			
 			principal.carregarArquivoConf(args[0]);
@@ -63,6 +64,7 @@ public class Principal {
 			}
 
 		} catch (Exception ex) {ex.printStackTrace();}
+		}
 	}
 	
 	/**
