@@ -15,18 +15,18 @@ public class PrepararArquivos {
 	public static int numObjHiper = 10;
 	
 	
-	public void juntarFronteira(String dir, String problema, String objetivo, String[] algoritmos , int exec, String metodo) throws IOException{
+	public void juntarFronteira(String dir, String problema, int objetivo, String[] algoritmos , int exec, String metodo, String id) throws IOException{
 		
 		boolean entrou = false;
 		for (int j = 0; j < algoritmos.length; j++) {
-			String arqfronteira = dir + "resultados/" + metodo + "/" + problema + "/" + objetivo + "/" + 
-			algoritmos[j] + "/" + metodo + "" + problema + "_" + objetivo + algoritmos[j] + "_fronteira.txt";
+			String arqfronteira = dir + "results/" + metodo + "/" + problema + "/" + objetivo + "/" + 
+			algoritmos[j] + "/" + id + "_fronts.txt";
 			
 			PrintStream psFronteira = new PrintStream(arqfronteira);
 			
 			for (int i = 0; i < exec; i++) {
-				String arqfronteiraTemp = dir + "resultados/" + metodo + "/" + problema + "/" + objetivo + "/" + 
-				algoritmos[j] + "/" + i + "/" + metodo + "" + problema + "_" + objetivo + "_fronteira.txt";
+				String arqfronteiraTemp = dir + "results/" + metodo + "/" + problema + "/" + objetivo + "/" + 
+				algoritmos[j] + "/" + i + "/"  + id + "_fronts";
 				//System.out.println(arqfronteiraTemp);
 				BufferedReader buff = new BufferedReader(new FileReader(arqfronteiraTemp));
 				while(buff.ready()){
@@ -38,13 +38,52 @@ public class PrepararArquivos {
 				}
 				
 				psFronteira.println();
-				if(entrou){
+				/*if(entrou){
 					System.out.println(i);
-				}
+				}*/
 				
 				entrou = false;
+				buff.close();
+			}
+			
+			psFronteira.close();
+		
+		}
+		
+	}
+	
+	
+public double maiorValor(String dir, String problema, int objetivo, String[] algoritmos , int exec, String metodo, String id) throws IOException{
+		
+	double maiorValor = Double.MIN_VALUE;
+	for (int j = 0; j < algoritmos.length; j++) {
+		String arqfronteira = dir + "results/" + metodo + "/" + problema + "/" + objetivo + "/" + 
+				algoritmos[j] + "/" + id + "_fronts.txt";
+
+				BufferedReader buff = new BufferedReader(new FileReader(arqfronteira));
+		while(buff.ready()){
+			String linha = buff.readLine().replace("\t", " ");
+			if(!linha.isEmpty()){
+				String[] linha_split = linha.trim().split(" ");
+				for (int i = 0; i < linha_split.length; i++) {
+					double num = new Double(linha_split[i]);
+					if(num > maiorValor)
+						maiorValor = num;
+				}
 			}
 		}
+
+		
+		
+		buff.close();
+
+
+		
+
+	}
+	
+	return maiorValor;
+		
 	}
 	
 	/**
@@ -865,17 +904,17 @@ public class PrepararArquivos {
 		PrepararArquivos pre = new PrepararArquivos();
 
 		//String dirEntrada = "/media/dados/Andre/ref/medidas/";		
-		String dirEntrada = "E:\\Andre\\Manyobjective\\";
-		String dirSaida = "E:\\Andre\\Dropbox\\temp\\";
+		String dirEntrada = "/home/andre/labrador/experimentos/i3etec/";
+		String dirSaida = "/home/andre/labrador/experimentos/i3etec/";
 		//String dir2 = "/home/andre/gemini/doutorado/experimentos/poda/";
 		//int objetivo = 2;
-		String problema  = "DTLZ6";
+		String problema  = "WFG2";
 		
 		//String[] algs = {"tb_mga_3_ctd","tb_mga_5_ctd","tb_mga_10_ctd","tb_mga_20_ctd", "tb_mga_30_ctd", "tb_mga_3_ctd_r","tb_mga_5_ctd_r","tb_mga_10_ctd_r","tb_mga_20_ctd_r", "tb_mga_30_ctd_r"};
-		//String[] algs = {"tb_mga_3_ext","tb_mga_5_ext","tb_mga_10_ext", "tb_mga_30_ext"};
+		String[] algs = {"tb_ideal_30_rndr"};
 
 		//String[] algs = {"0.5_NWSum_hyp_a","0.5_NWSum_hyp_ed","0.5_NWSum_hyp_ex","0.5_NWSum_hyp_m","0.5_NWSum_ideal","0.5_tb_crowd"};
-		String[] algs = {"tb_mga_5_hypp"};
+		//String[] algs = {"MOEAD-DRA"};
 		//String[] algs = {"0.5_sigma_ideal", "0.5_tb_ideal"};
 
 		//String[] algs = {"0.25_tb_crowd","0.30_tb_crowd","0.35_tb_crowd","0.40_tb_crowd","0.45_tb_crowd","0.5_NWSum_ideal","0.5_tb_crowd"};
@@ -883,24 +922,33 @@ public class PrepararArquivos {
 		//String metodo[] = {"imulti","imulti","imulti","imulti"};
 		//String metodo[] = {"smopso","smopso","smopso","smopso","smopso","smopso"};
 
-		String metodo[] = {"imulti","imulti","imulti","smopso","smopso","smopso","smopso","smopso"};
-		//String metodo = "smopso";
-
+		//String metodo[] = {"imulti","imulti","imulti","smopso","smopso","smopso","smopso","smopso"};
+		//String metodo = "MOEAD-DRA";
+		String metodo = "imulti";
+		 
 		
 		
-		//int objs[] = {3,5,10,15,20,30};
-		int objs[] = {5};
-		int exec = 10;
+		int objs[] = {2,3,4,5,6};
+		//int objs[] = {5};
+		int exec = 30;
 
 		try{
-
+			
+			for(int i =0; i<objs.length;i++){
+				int obj = objs[i];
+				//String id = metodo+ "_" + obj;
+				String id = metodo+ "_" + problema + "_" +obj + "_" + algs[0];
+				//pre.juntarFronteira(dirEntrada, problema, obj, algs, exec, metodo, id);
+				double maior = pre.maiorValor(dirEntrada, problema, obj, algs, exec, metodo, id);
+				System.out.println(obj + "\t" + maior);
+			}
 			
 			//pre.setReferenceFile(dirEntrada, dirSaida, problema, objs, algs[0], exec, metodo[0], "reference", null);
 			
 
 			
-			pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "gd", objs);
-			pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "igd", objs);
+			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "gd", objs);
+			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "igd", objs);
 			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "spacing", objs);
 			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "ld", objs);
 			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "con", objs);
@@ -941,7 +989,7 @@ public class PrepararArquivos {
 				pre.executarFriedman(dirEntrada, dirSaida, problema, objs[i], algs, exec, metodo, "gd", null);
 			}	
 
-			//pre.juntarFronteira(dir, problema, objetivo, algs, exec, metodo);
+			
 			//pre.inverterMaxMim(dir, problema, objetivo, algs, exec, metodo);
 			//pre.preparArquivosIndicadores(dir, problema, ""+objetivo, algs, exec, metodo, "gd", null);
 			//pre.preparArquivosIndicadores(dir, problema, ""+objetivo, algs, exec, metodo, "igd", null);

@@ -171,11 +171,11 @@ public class Particula {
 		 return c2 = 1.5 + Math.random();
 	 }
 	 
-	 /*public double getFi(){
+	 public double getFi2(){
 		 if(c1+c2>4)
 			 return c1+c2;
 		 else return 1;
-	 }*/
+	 }
 	 
 	 public double getFi(){
 		
@@ -245,10 +245,12 @@ public class Particula {
 		double[] parte4 = soma(parte2,parte3,1);
 		double[] parte5 = soma(parte1,parte4,1);
 		
-		double fi = getFi();
-		double raiz = fi*fi - 4*fi;
+		//double fi = getFi();
+		double fi = getFi2();
+		double raiz = Math.max(fi*fi - 4*fi,0.0);
 		
-		double X = Math.abs(2.0/(2-fi-Math.sqrt(raiz)));
+		//double X = Math.abs(2.0/(2-fi-Math.sqrt(raiz)));
+		double X = 2.0/(2-fi-Math.sqrt(raiz));
 				
 		
 		velocidade = multiplicacao(X, parte5);
