@@ -36,7 +36,6 @@ import kernel.mopso.SigmaMOPSO;
 import kernel.mopso.multi.IteratedMultiSwarm;
 import kernel.mopso.multi.MultiSwarm;
 import kernel.mopso.multi.TreeMultiSwarm;
-
 import problema.DTLZ1;
 import problema.DTLZ2;
 import problema.DTLZ3;
@@ -49,6 +48,8 @@ import problema.TestCaseSelection;
 import problema.ZDT1;
 import problema.ZDT2;
 import problema.ZDT3;
+import problema.wfg.WFG1;
+import problema.wfg.WFG2;
 import solucao.ComparetorObjetivoPF;
 import solucao.Solucao;
 
@@ -68,6 +69,8 @@ public class Principal {
 	public int m;
 	public int n;
 	public int k;
+	//WFG problem's parameter
+	public int l;
 	
 	public int repositorio;
 	
@@ -665,7 +668,14 @@ public class Principal {
 			n = 30;
 			m = 2;
 		}
+		if(prob.equals("WFG1")){
+			problema = new WFG1(k, l, m);
 		}
+		if(prob.equals("WFG2")){
+			problema = new WFG2(k, l, m);
+		}
+		}
+		this.n = problema.n;
 	}
 	
 	public void carregarArquivoConf(String nomeArquivo)throws IOException{
@@ -715,6 +725,8 @@ public class Principal {
 					m = new Integer(valor).intValue();
 				if(tag.equals("k"))
 					k = new Integer(valor).intValue();
+				if(tag.equals("l"))
+					l = new Integer(valor).intValue();
 				if(tag.equals("ocupacao"))
 					ocupacao = new Double(valor).doubleValue();
 				if(tag.equals("fator"))
@@ -861,9 +873,7 @@ public class Principal {
 			}
 		}
 		
-		if(n == -1)
-			n = m + k - 1;
-		
+				
 		buff.close();
 	}
 	

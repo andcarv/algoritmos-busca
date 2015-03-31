@@ -11,48 +11,50 @@ public class GerarArquivosConfiguracao {
 		
 		
 		
-		String jar = "ref.jar";
+		String jar = "i3e.jar";
 
-		String problema  = "dtlz2";
+		String problema  = "wfg2";
 	
 
 
 
 		//String[] algs = {"0.25", "0.30", "0.35", "0.40", "0.45", "0.5"};
 		String[] algs = {"0.5"};
-		String metodo = "multi";
+		String metodo = "imulti";
 		String objetivos = "-";
-		String exec = "20";
+		String exec = "30";
 		String g = "100";
 		String a = "-1";
 		//String a = "-1";
-		String p[] = {"200", "50", "20"};
-		//String[] p = {"100"};
+		//String p[] = {"200", "50", "20"};
+		String[] p = {"100"};
 		String r = "200";
 		String rank = "false";
 		//String archiver[] = {"hyp_m", "hyp_ex", "ideal", "dist", "eucli", "tcheb", "ar", "crowd", "rand", "ag", "dom", "mga"};
-		String archiver[] = {"mga;ideal"};
+		String archiver[] = {"ideal;mga"};
 		String[] eps = {"0.1","0.05", "0.025", "0.01", "0.005", "0.0025", "0.001", "0.0005", "0.00025", "0.0001"  };
-		int k = 10;
+		int k = 2;
+		int lp = 20;
+		
 
 		String lider = "tb";
-		String  direxec = "/home/andre/doutorado/experimentos/multi/";
+		String  direxec = "/home/andre/experimentos/i3etec/";
 
-		String[]  swarms = {"3","10","30"};
-		//String[]  swarms = {"6"};
+		//String[]  swarms = {"3","10","30"};
+		String[]  swarms = {"30"};
 		String shared = "false";
 		//String[] update = {"2", "10", "20", "50"};
 		String[] update = {"10"};
 		String box_range_beg = "0.5";	
 		String box_range_end = "0.1";	
-		String pop_swarm = "75";
-		String rep_swarm = "200";
+		String pop_swarm = "25";
+		String rep_swarm = "30";
 		String split_iterations = "5";
-		String eval_analysis = "false";
+		String eval = "false";
 		//String[] reset = {"true" , "false"};
 		String[] reset = {"false"};
-		String initialize[] = {"ext", "rnd", "ctd"};
-		//String initialize[] = {"ctd"};
+		//String initialize[] = {"ext", "rnd", "ctd"};
+		String initialize[] = {"rndr"};
 
 
 		/*if(!ind.equals("")){
@@ -64,8 +66,8 @@ public class GerarArquivosConfiguracao {
 				String sw = swarms[i];
 				for(int j = 0; j < initialize.length; j++){
 					String init = initialize[j];
-					for(int l = 0; l < reset.length; l++){
-						String res = reset[l];
+					for(int d = 0; d < reset.length; d++){
+						String res = reset[d];
 
 						String[] liderTemp = lider.split(";");
 						String[] archiveTemp = archiver[0].split(";");
@@ -98,8 +100,8 @@ public class GerarArquivosConfiguracao {
 							psExec.println("nohup java  -Xms128m -Xmx768m -jar " + jar + " " + arquivo + " > logs/" + id+".log &");
 
 
-						ps.println("algoritmo = " + metodo);
-						ps.println("problema = " + problema);
+						ps.println("algorithm = " + metodo);
+						ps.println("problem = " + problema);
 						
 						if(!ind.equals("")){
 							String direxec2 = direxec + "resultados/" + metodo + "/" + problema.toUpperCase() + "/" + m + "/" + pos_id + "/";
@@ -110,23 +112,24 @@ public class GerarArquivosConfiguracao {
 						} else
 							ps.println("direxec =  " + direxec);
 						ps.println("m = " + m);
-						ps.println("k = " + k);
+						ps.println("k = " + 2*(m-1));
+						ps.println("l = " + lp);
 						ps.println("max_min = " + objetivos);
-						ps.println("geracoes = " + g);
-						ps.println("populacao = " + p[0]);
-						ps.println("repositorio = " + r);
+						ps.println("generations = " + g);
+						ps.println("population = " + p[0]);
+						ps.println("repository = " + r);
 						ps.println("numexec = " + exec);
 						ps.println("S =" + algs[0]);
 						ps.println("rank = false");
 						ps.println("archiver = " + archiver[0]);				
-						ps.println("lider = " + lider);	
+						ps.println("leader = " + lider);	
 						ps.println("swarms = " + sw);
-						ps.println("box_range_mim = " + box_range_beg);	
-						ps.println("box_range_max = " + box_range_end);	
+						ps.println("box_range_beg = " + box_range_beg);	
+						ps.println("box_range_end = " + box_range_end);	
 						ps.println("pop_swarm = " + pop_swarm);
 						ps.println("rep_swarm = " + rep_swarm);
 						ps.println("split_iterations = " + split_iterations);
-						ps.println("eval_analysis = " + eval_analysis);
+						ps.println("eval = " + eval);
 						ps.println("reset = " + res);
 						ps.println("initialize = " + init);
 
@@ -172,7 +175,7 @@ public class GerarArquivosConfiguracao {
 						ps.println("update = " + up);
 						ps.println("box_range_mim = " + box_range_beg);	
 						ps.println("box_range_max = " + box_range_end);	
-						ps.println("eval_analysis = " + eval_analysis);
+						ps.println("eval = " + eval);
 					}
 				}
 			}
@@ -264,14 +267,14 @@ public class GerarArquivosConfiguracao {
 	public static void main(String[] args) {
 
 
-		int[] ms = {3,5,10,15,20};
+		int[] ms = {2,3,4,5,6,7,8,9,10};
 		//int[] ms = {10,15,20};		
 
 	
 		String ind = "";
 
 		try{
-			PrintStream psExec = new PrintStream("exec-arq.txt");
+			PrintStream psExec = new PrintStream("exec-i3e.txt");
 			for (int i = 0; i < ms.length; i++) {
 				System.out.println(ms[i]);
 				gerarArquivos(ms[i],ind, psExec);

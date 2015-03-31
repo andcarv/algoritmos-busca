@@ -52,7 +52,7 @@ public class IteratedMultiSwarm extends AlgoritmoAprendizado {
 	
 	public int iterations = 10;
 	
-	public GD gd_reset;
+	//public GD gd_reset;
 	public IGD igd_reset;
 	
 	public boolean reset = false;
@@ -151,7 +151,7 @@ public class IteratedMultiSwarm extends AlgoritmoAprendizado {
 		
 		setInitializeMethod();
 		
-		String caminhoDir = "evaluations/";
+		/*String caminhoDir = "evaluations/";
 		String temp = "temp";
 		ArrayList<PontoFronteira> pftrue= Principal.carregarFronteiraPareto(System.getProperty("user.dir"), problema.problema, problema.m);
 		
@@ -159,7 +159,7 @@ public class IteratedMultiSwarm extends AlgoritmoAprendizado {
 		gd_reset.preencherObjetivosMaxMin(maxmim);
 		
 		igd_reset = new IGD(problema.m, caminhoDir, temp, pftrue);
-		igd_reset.preencherObjetivosMaxMin(maxmim);
+		igd_reset.preencherObjetivosMaxMin(maxmim);*/
 		
 	}
 	
@@ -228,15 +228,15 @@ public class IteratedMultiSwarm extends AlgoritmoAprendizado {
 				psTemp.close();
 				initializeMethod.initializeSwarms(initial_front, box_range);
 				for(int i = 0; i<geracoes; i++){
-					if(i%10 == 0)
+					if(i%100 == 0)
 						System.out.print(i + " ");
 
 					for (int s = 0; s < swarms.length; s++) {
-						if(i%10 == 0)
+						if(i%100 == 0)
 							System.out.print( "s" + s + " ");
 						swarms[s].evolutionaryLoop();
 					}
-					if(i % 10 ==0)
+					if(i % 100 ==0)
 						System.out.println();
 
 					if(eval_analysis){
@@ -325,7 +325,7 @@ public class IteratedMultiSwarm extends AlgoritmoAprendizado {
 		box_range= box_range + update_box_range_tax;
 	}
 	
-	public void calculate_indicators_swarms_reset(ArrayList<Solucao> solutions, double[][] indicators_swarm, int s_i){
+	/*public void calculate_indicators_swarms_reset(ArrayList<Solucao> solutions, double[][] indicators_swarm, int s_i){
 		ArrayList<PontoFronteira> solutions_pf = new ArrayList<PontoFronteira>();
 
 		for (Iterator<Solucao> iterator = solutions.iterator(); iterator.hasNext();) {
@@ -343,7 +343,7 @@ public class IteratedMultiSwarm extends AlgoritmoAprendizado {
 		 
 		 indicators_swarm[s_i][0] = gd_reset.calcular();
 		 indicators_swarm[s_i][1] = igd_reset.calcular();
-	}
+	}*/
 	
 	public void reset_dominated_swarms(double[][] indicators_swarm){
 		for(int i = 0; i< indicators_swarm.length; i++){

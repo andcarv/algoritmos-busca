@@ -162,6 +162,7 @@ public class WFG1 extends WFG {
 	    for (int i = 0; i < f.length; i++) 
 	        solucao.objetivos[i] = f[i];
 				
+	    avaliacoes++;
 		return solucao.objetivos;
 	}
 	
