@@ -20,6 +20,8 @@ public class ComparatorRegraSupportConfidence implements Comparator<Regra> {
 			return 1;
 		} else if (r1.getSup() < r2.getSup()) {
 			return -1;
+		}else if(r1.getSup()> r2.getSup()){
+			return 1;
 		}else if(r1.corpo.length < r2.corpo.length){
 			return -1;
 		}else if(r1.corpo.length > r2.corpo.length){

@@ -46,13 +46,27 @@ import weka.core.Instances;
  * 
  */
 public abstract class ObterRegras {
-	private static final int ORDENACAO_CSA = 0;
-	private static final int ORDENACAO_SENSITIVIDADE = 1;
-	private static final int ORDENACAO_ESPECIFICIDADE = 2;
-
-	private static final int VOTACAO_LAPLACE_MEDIA = 10;
-	private static final int VOTACAO_SENSITIVIDADE_MEDIA = 11;
-	private static final int VOTACAO_ESPECIFICIDADE_MEDIA = 12;
+	private int medida = -1;
+	private int ordenacao = -1;
+	private int votacao = -1;
+	/*
+	 * CSA  -> support confidence 
+	 * CONF -> Confidence 
+	 * LP   -> La Place 
+	 * Sens -> Sensitividade 
+	 * Spec -> Especificidade 
+	 * Knee -> Joelho 
+	 * Extr -> Extremos ORD
+	 * ORD  -> ORDENACAO
+	 */
+	public static final int CSA = 0;
+	public static final int CONF = 1;
+	public static final int LP = 2;
+	public static final int SENS = 3;
+	public static final int SPEC = 4;
+	public static final int KNEE = 5;
+	public static final int EXTR = 6;
+	public static final int ORD = 7;
 
 	// SortedSet<Double> limiares; // limiares utilizados na construï¿½ï¿½o do
 	// grï¿½fico ROC
@@ -1785,68 +1799,82 @@ public abstract class ObterRegras {
 				+ nomeBase + "_medidas", nomeMetodo + "_" + nomeBase
 				+ "_comandos", nomeMetodo + "_" + nomeBase + "_confusao");
 	}
-
-	/**
-	 * Mï¿½todo que instania a votacao de acordo com a definicao do arquivo de
-	 * configuracao
-	 * 
-	 * @param votacao
-	 */
-	public void setVotacao(String votacao) {
-		if (votacao.equals("confidence"))
-			this.metodoVotacao = new VotacaoConfidence();
-		else {
-			if (votacao.equals("ordenacao"))
+        /*
+			ORD  == ORDENACAO
+			CONF == CONFIDENCE
+			CSA  == Support Confidence Algorithm
+			SENS == Sensitividade
+			SPEC == Especificidade
+			LP   == Laplace
+			K    == Joelho
+			E    == Extremo
+			Exemplo de escrita no arquivo principal.txt:
+			-->Votacao com Joelho ou Extremo parametros:
+				Ordenacao       : K ou E (Joelho ou Extremo)
+				Medida Ordenacao: CSA ou SENS ou SPEC 
+				Votacao         : LP ou SENS ou SPEC
+				Exemplo de uso  : k CSA LP
+			-->Votacao com Outros métodos de Ordenacao:
+				Ordenacao       : CSA ou SENS ou SPEC
+				Votacao         : LP ou SENS ou SPEC 
+				Exemplo de uso  : CSA SENS
+			-->Votacao sem Ordenacao:
+				método          : ORD ou CONF
+				Exemplo de uso  : CONF
+			OBS : Deve existir um espaço separando cada parametro de entrada;
+			OBS2: Escrita maiuscula ou minuscula
+	    */
+	public void setVotacao(String votacao) {		
+		String[] votacaoArray = votacao.split(" ");
+		switch (votacaoArray.length) {
+		case 1:
+			if (votacaoArray[0].equalsIgnoreCase("ORD")) {
+				this.metodoVotacao = new VotacaoConfidence();
+			} else if (votacaoArray[0].equalsIgnoreCase("CONF")) {
 				this.metodoVotacao = new VotacaoConfidenceLaplaceOrdenacao();
-			else {
-				if (votacao.equals("laplace"))
-					this.metodoVotacao = new VotacaoConfidenceLaplace();
-				else {
-					if (votacao.equals("CSA"))
-						this.metodoVotacao = new VotacaoSupportConfidenceOrdenacao();
-					else {
-						if (votacao.equals("SS"))
-							/* Sensitividade com Sensitividade */
-							this.metodoVotacao = new VotacaoSensitividadeOrdenacao();
-						else {
-							if (votacao.equals("EE"))
-								/* Especificidade com Especificidade */
-								this.metodoVotacao = new VotacaoEspecificidadeOrdenacao();
-							else {
-								if (votacao.equals("CSA-Sens")){
-									System.out.println("Votação: CSA-Sensitividade");
-									this.metodoVotacao = new VotacaoGeral(
-											ORDENACAO_CSA,
-											VOTACAO_SENSITIVIDADE_MEDIA);
-								}else {
-									if (votacao.equals("CSA-Espec"))
-										for(int i=0;i<3;i++){
-										this.metodoVotacao = new VotacaoGeral(
-												ORDENACAO_CSA,
-												VOTACAO_ESPECIFICIDADE_MEDIA); 
-										}
-									else {
-										if (votacao.equals("Sens-Laplace"))
-											this.metodoVotacao = new VotacaoGeral(
-													ORDENACAO_SENSITIVIDADE,
-													VOTACAO_LAPLACE_MEDIA);
-										else {
-											if (votacao.equals("Espec-Laplace"))
-												this.metodoVotacao = new VotacaoGeral(
-														ORDENACAO_ESPECIFICIDADE,
-														VOTACAO_LAPLACE_MEDIA);
-											else {
-
-												this.metodoVotacao = new VotacaoSimples();
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
 			}
+			break;
+
+		case 2:
+			// Ordenacao
+			if (votacaoArray[0].equalsIgnoreCase("CSA"))
+				this.ordenacao = CSA;
+			else if (votacaoArray[0].equalsIgnoreCase("SENS"))
+				this.ordenacao = SENS;
+			else if (votacaoArray[0].equalsIgnoreCase("SPEC"))
+				this.ordenacao = SPEC;
+			// Votacao
+			if (votacaoArray[1].equalsIgnoreCase("LP"))
+				this.votacao = LP;
+			else if (votacaoArray[1].equalsIgnoreCase("SENS"))
+				this.votacao = SENS;
+			if (votacaoArray[1].equalsIgnoreCase("SPEC"))
+				this.votacao = SPEC;
+			this.metodoVotacao = new VotacaoGeral(this.ordenacao, this.votacao);
+			break;
+
+		case 3:
+			if (votacaoArray[0].equalsIgnoreCase("K"))
+				this.ordenacao = KNEE;
+			else if (votacaoArray[0].equalsIgnoreCase("E"))
+				this.ordenacao = EXTR;
+			// Ordenacao
+			if (votacaoArray[1].equalsIgnoreCase("CSA"))
+				this.medida = CSA;
+			else if (votacaoArray[1].equalsIgnoreCase("SENS"))
+				this.medida = SENS;
+			else if (votacaoArray[1].equalsIgnoreCase("SPEC"))
+				this.medida = SPEC;
+			// Votacao
+			if (votacaoArray[2].equalsIgnoreCase("LP"))
+				this.votacao = LP;
+			else if (votacaoArray[2].equalsIgnoreCase("SENS"))
+				this.votacao = SENS;
+			if (votacaoArray[2].equalsIgnoreCase("SPEC"))
+				this.votacao = SPEC;
+			this.metodoVotacao = new VotacaoGeral(ordenacao, medida,
+					this.votacao);
+			break;
 		}
 	}
 
@@ -2177,5 +2205,4 @@ public abstract class ObterRegras {
 	 * 
 	 * }
 	 */
-
 }
