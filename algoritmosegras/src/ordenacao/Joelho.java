@@ -33,20 +33,37 @@ public class Joelho {
 				acima = k / 2;
 				abaixo = k / 2;
 			} else {
-				acima = ((k - 1) / 2) + 1;
-				abaixo = ((k - 1) / 2);
+				if(Math.random()<=0.5){
+					acima = ((k - 1) / 2) + 1;
+					abaixo = ((k - 1) / 2);
+				}else{
+					acima = ((k - 1) / 2);
+					abaixo = ((k - 1) / 2)+1;
+				}
 			}
 			if (regras.size() % 2 == 0) {
 				meio = regras.size() / 2;
 			} else {
 				meio = ((regras.size() - 1) / 2) + 1;
 			}
-			for (int i = acima; i<=0 ; i--) {
-				retorno.add(regras.get(meio - i));
+			if(regras.size()%2 !=0 ){
+				if(Math.random()<=0.5){
+					for (int i = acima; i<=1 ; i--) {
+						retorno.add(regras.get(meio - i));
+					}
+					for (int j = 0; j < abaixo; j++) {
+						retorno.add(regras.get(meio + j));
+					}
+				}else{
+					for (int i = acima; i<=0 ; i--) {
+						retorno.add(regras.get(meio - i));
+					}
+					for (int j = 1; j < abaixo; j++) {
+						retorno.add(regras.get(meio + j));
+					}
+				}
 			}
-			for (int j = 0; j < abaixo; j++) {
-				retorno.add(regras.get(meio + j));
-			}
+			
 			return retorno;
 		} else {
 			return regras;

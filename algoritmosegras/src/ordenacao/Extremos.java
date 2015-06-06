@@ -36,8 +36,13 @@ public class Extremos {
 				acima = k / 2;
 				abaixo = k / 2;
 			} else {
-				acima = ((k - 1) / 2) + 1;
-				abaixo = ((k - 1) / 2);
+				if(Math.random()<=0.5){
+					acima = ((k - 1) / 2) + 1;
+					abaixo = ((k - 1) / 2);
+				}else{
+					acima = ((k - 1) / 2);
+					abaixo = ((k - 1) / 2)+1;
+				}
 			}
 
 			for (int i = 0; i < acima; i++) {
