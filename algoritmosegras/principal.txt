@@ -1,4 +1,4 @@
-nomebase=BREAST_NUMERICO
+nomebase=GERMAN
 caminhobase=C:\Users\Caique Oliveira\Desktop\base\
 metodo=pso
 classePositiva=0
@@ -8,7 +8,7 @@ numExec=1
 numClasses=2
 auc=sim
 verbose=sim
-votacao=E CSA SENS
+votacao=E SENS SPEC
 objetivos=sens;spec
 geracoes=100
 populacao=500
