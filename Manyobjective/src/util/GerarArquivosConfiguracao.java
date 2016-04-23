@@ -13,7 +13,7 @@ public class GerarArquivosConfiguracao {
 		
 		String jar = "i3e.jar";
 
-		String problema  = "wfg2";
+		String problema  = "dtlz2";
 	
 
 
@@ -31,26 +31,26 @@ public class GerarArquivosConfiguracao {
 		String r = "200";
 		String rank = "false";
 		//String archiver[] = {"hyp_m", "hyp_ex", "ideal", "dist", "eucli", "tcheb", "ar", "crowd", "rand", "ag", "dom", "mga"};
-		String archiver[] = {"ideal;mga"};
+		String archiver[] = {"mga;ideal"};
 		String[] eps = {"0.1","0.05", "0.025", "0.01", "0.005", "0.0025", "0.001", "0.0005", "0.00025", "0.0001"  };
-		int k = 2;
+		int k = 10;
 		int lp = 20;
 		
 
 		String lider = "tb";
-		String  direxec = "/home/andre/experimentos/i3etec/";
+		String  direxec = "/home/andre/experimentos/hms/";
 
 		//String[]  swarms = {"3","10","30"};
 		String[]  swarms = {"30"};
 		String shared = "false";
 		//String[] update = {"2", "10", "20", "50"};
-		String[] update = {"10"};
+		String[] update = {"20"};
 		String box_range_beg = "0.5";	
 		String box_range_end = "0.1";	
 		String pop_swarm = "25";
-		String rep_swarm = "30";
+		String rep_swarm = "200";
 		String split_iterations = "5";
-		String eval = "false";
+		String eval = "true";
 		//String[] reset = {"true" , "false"};
 		String[] reset = {"false"};
 		//String initialize[] = {"ext", "rnd", "ctd"};
@@ -263,24 +263,62 @@ public class GerarArquivosConfiguracao {
 				}
 			}
 		}
-	}			
+	}		
+	
+	public static void gerarArquivosInd(int m, String ind, PrintStream psExec) throws IOException{
+		String arquivo = "";
+		String jar = "ind.jar";
+		String metodo = "NSGAIII";
+		String problema[] = {"DTLZ1","DTLZ2","DTLZ3","DTLZ4","DTLZ5","DTLZ6","DTLZ7"};
+		String direxec = "/home/andre/experimentos/hmulti/";
+		
+		for (int i = 0; i < problema.length; i++) {
+
+			String prob = problema[i];
+
+			String id = "principal_" + metodo + "_"+ prob.toUpperCase() + "_" + m + "_" + ind;
+			arquivo = direxec + "arquivosMulti/" + id + ".txt";
+
+			PrintStream ps = new PrintStream(arquivo);
+
+
+			psExec.println("nohup java  -Xms128m -Xmx768m -jar " + jar + " " + arquivo + " > logs/" + id+".log &");
+
+
+			ps.println("algorithm = " + metodo);
+			ps.println("problem = " + problema[i]);		
+			ps.println("m = " + m);
+			ps.println("max_min = -");
+			ps.println("direxec =  " + direxec);
+			ps.println("indicador =  " + ind);
+
+			ps.flush();
+			ps.close();
+			psExec.flush();
+		}
+		
+	}
+	
 	public static void main(String[] args) {
 
 
-		int[] ms = {2,3,4,5,6,7,8,9,10};
-		//int[] ms = {10,15,20};		
+		//int[] ms = {2,3,4,5,6,7,8,9,10};
+		int[] ms = {3,5,10,15};		
 
 	
-		String ind = "";
+		String ind = "all";
 
 		try{
 			PrintStream psExec = new PrintStream("exec-i3e.txt");
 			for (int i = 0; i < ms.length; i++) {
 				System.out.println(ms[i]);
-				gerarArquivos(ms[i],ind, psExec);
+				if(ind.equals(""))
+					gerarArquivos(ms[i],ind, psExec);
+				else
+					gerarArquivosInd(ms[i], ind, psExec);
 			}
 			
-
+			psExec.close();
 		} catch (Exception e) { e.printStackTrace();
 		}
 	}

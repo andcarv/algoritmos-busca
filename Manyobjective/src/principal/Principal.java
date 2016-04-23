@@ -148,7 +148,7 @@ public class Principal {
 
 
 			if(!principal.indicador.equals(""))
-				principal.executarIndicador();
+				principal.executarIndicadorAlg();
 			else{
 				if(principal.alg.equals("sigma"))
 					principal.algoritmo = new SigmaMOPSO(principal.n, principal.problema, principal.geracoes, principal.numeroavaliacoes, principal.populacao, principal.S, principal.maxmimObjetivos, principal.tipoRank, principal.S_MAX, principal.tipoArquivo, principal.eps, principal.eval_analysis);
@@ -513,46 +513,59 @@ public class Principal {
 	}
 
 	
-	public void executarIndicador2() throws IOException{
+	public void executarIndicadorAlg() throws IOException{
 
 		ArrayList<PontoFronteira> pftrue= null;
 		double[] j = null;
 		double[] l = null;
-
-		if(indicador.equals("cover"))
-			executarDominance();
-		else{
-
-
-
-			if(indicador.equals("gd") || indicador.equals("igd") || indicador.equals("tcheb") || indicador.equals("pnf")){
-
-
-
-				pftrue= carregarFronteiraPareto(System.getProperty("user.dir"), prob, m);
-
-				if(indicador.equals("tcheb")){
-					j =  problema.getJoelho(n, pftrue);
-					l = problema.getLambda(n, pftrue);
-				}
-
+		if(indicador.equals("gd") || indicador.equals("igd") || indicador.equals("tcheb") || indicador.equals("pnf") || indicador.equals("all") || indicador.equals("ld") || indicador.equals("con") ){
+			
+			if(problema == null){
+				true_pareto = dirExec + "/" + prob + "_" + m + "_pareto.txt";
+				pftrue= loadParetoFrontFile(true_pareto, m);
 			}
+			else{
+				pftrue= carregarFronteiraPareto(System.getProperty("user.dir"), prob, m);
+				j =  problema.getJoelho(n, pftrue);
+				l = problema.getLambda(n, pftrue);
+			}
+		}
+		
+		//String indicators[] = {"gd", "igd", "spread","ld","con", "np"};
+		String indicators[] = {"gd", "igd"};
+		if(!indicador.equals("all")){
+			indicators = new String[1];
+			indicators[0] = indicador;
+		}
+			
+		
+		String caminhoDir = dirExec +  "/results/" + alg + "/" + prob + "/" + m + "/" + alg + "/";
+		
+		
+		if(caminhoDir.lastIndexOf("\\" ) != caminhoDir.length()-1 ){
+			if(caminhoDir.lastIndexOf("/" ) != caminhoDir.length()-1)
+				caminhoDir+="/";
+		}
+		
+		
+		String idExec = alg + "_" + prob + "_" + m + "_" + alg;
 
-			String diretorio = dirExec;
-			if(diretorio.equals(""))
-				diretorio = System.getProperty("user.dir");
+		for (int i = 0; i < indicators.length; i++) {
+			String indicador = indicators[i];
 
-			String caminhoDir = diretorio;
-			File dir = new File(caminhoDir);
-			dir.mkdirs();
-
-			String idExec = alg;
 			Indicador ind = null;
 			if(indicador.equals("gd")){
 				ind = new GD(m, caminhoDir, idExec, pftrue);
 			}
 			if(indicador.equals("igd")){
 				ind = new IGD(m, caminhoDir, idExec, pftrue);
+			}
+			if(indicador.equals("ld")){
+				ind = new LargestDistance(m, caminhoDir, idExec, pftrue);
+			}
+			
+			if(indicador.equals("con")){
+				ind = new Convergence(m, caminhoDir, idExec, pftrue);
 			}
 
 			if(indicador.equals("tcheb"))
@@ -568,13 +581,15 @@ public class Principal {
 
 			if(indicador.equals("np"))
 				ind = new NumeroPontos(m, caminhoDir, idExec);
+			
+			
 
 			if(ind!=null){
 				ind.preencherObjetivosMaxMin(maxmimObjetivos);
-				String arquivo1 = caminhoDir + "/" + idExec  + "_fronteira.txt";
+				String frontFile = caminhoDir + idExec + "_fronts" + ".txt";
+				//String frontFile = caminhoDir + "/" + front;
 				System.out.println("Indicador: " + ind.indicador);
-				System.out.println("Algorihtm = " + idExec);
-				ind.calcularIndicadorArquivo(arquivo1);
+				ind.calcularIndicadorArquivo(frontFile);
 			}
 		}
 	}

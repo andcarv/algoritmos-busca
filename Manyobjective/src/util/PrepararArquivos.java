@@ -25,8 +25,13 @@ public class PrepararArquivos {
 			PrintStream psFronteira = new PrintStream(arqfronteira);
 			
 			for (int i = 0; i < exec; i++) {
+				//String arqfronteiraTemp = dir + "results/" + metodo + "/" + problema + "/" + objetivo + "/" + 
+				//algoritmos[j] + "/" + i + "/"  + id + "_fronts";
+				
 				String arqfronteiraTemp = dir + "results/" + metodo + "/" + problema + "/" + objetivo + "/" + 
-				algoritmos[j] + "/" + i + "/"  + id + "_fronts";
+						algoritmos[j] + "/" + i + "/"  + metodo + "_"+ objetivo+ "_fronts";
+				
+				
 				//System.out.println(arqfronteiraTemp);
 				BufferedReader buff = new BufferedReader(new FileReader(arqfronteiraTemp));
 				while(buff.ready()){
@@ -393,6 +398,7 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 	}
 	
 	
+	
 	public void executarFriedman(String dirEntrada, String dirSaida, String problema, int objetivo, String[] algoritmos, int exec, String metodo[], String ind, PrintStream psSaida) throws IOException{
 		Double[][] valores = new Double[algoritmos.length][exec];
 		
@@ -402,7 +408,7 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 
 		for (int j = 0; j < algoritmos.length; j++) {
 
-			String arq = dirEntrada + "resultados/" + metodo[j] + "/" + problema + "/" + objetivo + "/" +			
+			String arq = dirEntrada + "results/" + metodo[j] + "/" + problema + "/" + objetivo + "/" +			
 			algoritmos[j] + "/" + metodo[j] + "_" + problema + "_" + objetivo + "_" + algoritmos[j] + "_" + ind + ".txt";
 			
 			//System.out.println(arq);
@@ -512,7 +518,7 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 		
 		for (int i = 0; i < melhores.length; i++) {
 			if(melhores[i] == 1)
-				System.out.println( (i+1)+": "+ algoritmos[i]);
+				System.out.println( (i+1)+": "+ algoritmos[i] + "\t" + metodo[i]);
 		}
 		
 		System.out.println();
@@ -806,7 +812,7 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 
 		BufferedReader buff;
 		
-		String id = metodo[0] + problema + "_" + ind +"_" + objetivo;
+		String id = problema + "_" + ind +"_" + objetivo;
 		
 		String arquivo_saida = dir2 + "medidas/" + id + "_comando_friedman.r"; 
 
@@ -828,13 +834,14 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 		
 
 		for (int j = 0; j < algoritmos.length; j++) {
-			String arq =  dir + "resultados/" + metodo[j]  + "/" + problema + "/" + objetivo + "/" + 
+			String arq =  dir + "results/" + metodo[j]  + "/" + problema + "/" + objetivo + "/" + 
 			algoritmos[j] + "/" + metodo[j] + "_" + problema + "_" + objetivo + "_" + algoritmos[j] + "_" + ind +"_comando.txt";
 			
 			
 			
 			String alg = metodo[j] + "_" + problema + "_" + objetivo + "_" + algoritmos[j] + "_" + ind;
 			
+			alg = alg.replace('-', '_');
 			
 			comandos.append(alg + ",");
 			
@@ -849,10 +856,16 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 			
 			
 			while(buff.ready()){
-			
-				psSaida.println(buff.readLine());
+				String linha = buff.readLine();
+				if(linha.contains("MOEAD"))
+					linha = linha.replaceAll("MOEAD-DRA", "MOEAD_DRA");
+				
+					psSaida.println(linha);
+				
 				
 			}
+			
+			buff.close();
 			
 		}  
 		
@@ -886,6 +899,9 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 		psSaida.println(comandosBox);
 		
 		psSaida.println("dev.off()");
+		
+		psSaida.flush();
+		psSaida.close();
 		return arquivo_saida;
 	}
 
@@ -904,14 +920,14 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 		PrepararArquivos pre = new PrepararArquivos();
 
 		//String dirEntrada = "/media/dados/Andre/ref/medidas/";		
-		String dirEntrada = "/home/andre/labrador/experimentos/i3etec/";
-		String dirSaida = "/home/andre/labrador/experimentos/i3etec/";
+		String dirEntrada = "/home/andre/experimentos/hmulti/";
+		String dirSaida = "/home/andre/experimentos/hmulti/";
 		//String dir2 = "/home/andre/gemini/doutorado/experimentos/poda/";
 		//int objetivo = 2;
-		String problema  = "WFG2";
-		
+		String problema  = "DTLZ7";
+		String ind = "gd";
 		//String[] algs = {"tb_mga_3_ctd","tb_mga_5_ctd","tb_mga_10_ctd","tb_mga_20_ctd", "tb_mga_30_ctd", "tb_mga_3_ctd_r","tb_mga_5_ctd_r","tb_mga_10_ctd_r","tb_mga_20_ctd_r", "tb_mga_30_ctd_r"};
-		String[] algs = {"tb_ideal_30_rndr"};
+		String[] algs = {"0.5_tb_hyp_ms","20_tb_ideal_mga_30_128","tb_mga_30_rndr","MOEAD-DRA", "NSGAIII", "SMPSO"};
 
 		//String[] algs = {"0.5_NWSum_hyp_a","0.5_NWSum_hyp_ed","0.5_NWSum_hyp_ex","0.5_NWSum_hyp_m","0.5_NWSum_ideal","0.5_tb_crowd"};
 		//String[] algs = {"MOEAD-DRA"};
@@ -922,32 +938,32 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 		//String metodo[] = {"imulti","imulti","imulti","imulti"};
 		//String metodo[] = {"smopso","smopso","smopso","smopso","smopso","smopso"};
 
-		//String metodo[] = {"imulti","imulti","imulti","smopso","smopso","smopso","smopso","smopso"};
-		//String metodo = "MOEAD-DRA";
-		String metodo = "imulti";
+		String metodo[] = {"hmulti","multi","imulti","MOEAD-DRA","NSGAIII","SMPSO"};
+		//String metodo = "SMPSO";
+		//String metodo = "imulti";
 		 
 		
 		
-		int objs[] = {2,3,4,5,6};
-		//int objs[] = {5};
+		//int objs[] = {2,3,4,5,6};
+		int objs[] = {3,5, 10,15};
 		int exec = 30;
 
 		try{
 			
-			for(int i =0; i<objs.length;i++){
+			/*for(int i =0; i<objs.length;i++){
 				int obj = objs[i];
-				//String id = metodo+ "_" + obj;
+				//String id = metodo+ "_" + problema + "_" +obj;
 				String id = metodo+ "_" + problema + "_" +obj + "_" + algs[0];
-				//pre.juntarFronteira(dirEntrada, problema, obj, algs, exec, metodo, id);
-				double maior = pre.maiorValor(dirEntrada, problema, obj, algs, exec, metodo, id);
-				System.out.println(obj + "\t" + maior);
-			}
+				pre.juntarFronteira(dirEntrada, problema, obj, algs, exec, metodo, id);
+				//double maior = pre.maiorValor(dirEntrada, problema, obj, algs, exec, metodo, id);
+				//System.out.println(obj + "\t" + maior);
+			}*/
 			
 			//pre.setReferenceFile(dirEntrada, dirSaida, problema, objs, algs[0], exec, metodo[0], "reference", null);
 			
 
 			
-			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "gd", objs);
+			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, ind, objs);
 			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "igd", objs);
 			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "spacing", objs);
 			//pre.preparArquivosIndicadoresTodos(dirEntrada, dirSaida, problema, algs, exec, metodo, "ld", objs);
@@ -962,16 +978,15 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 
 		
 			
-			/*for (int i = 0; i < objs.length; i++) {
+			for (int i = 0; i < objs.length; i++) {
 				System.out.println(objs[i]);
 				
-				System.out.println("Gerando scripts .R");
-				String arquivo = pre.preparArquivosComandosFriedman(dirEntrada, dirSaida,  problema, ""+objs[i], algs, exec, metodo, "gd");
-				System.out.println("Executando o script");
+				//System.out.println("Gerando scripts .R");
+				//String arquivo = pre.preparArquivosComandosFriedman(dirEntrada, dirSaida,  problema, ""+objs[i], algs, exec, metodo, ind);
+				//System.out.println("Executando o script");
+				String arquivo = "/home/andre/Dropbox/UFS/orientacao/Breno/Erbase/friedman/nrp1-07_friadman.r";
 				pre.executarComandoLinux(arquivo);
-				pre.executarFriedman(dirEntrada, dirSaida, problema, objs[i], algs, exec, metodo, "gd", null);
-				
-				
+								
 				//pre.preparArquivosComandosFriedman(dirEntrada, dirSaida,  problema, ""+objs[i], algs, exec, metodo, "igd");
 				//pre.preparArquivosComandosFriedman(dirEntrada, dirSaida,  problema, ""+objs[i], algs, exec, metodo, "spacing");
 				//pre.preparArquivosComandosFriedman(dirEntrada, dirSaida,  problema, ""+objs[i], algs, exec, metodo, "ld");
@@ -980,14 +995,14 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 				//pre.preparArquivosComandosFriedman(dirEntrada, dirSaida,  problema, ""+objs[i], algs, exec, metodo, "hypervolume");
 			}
 			
-			System.out.println("Esperando execução do script");
-			Thread.sleep(1000);
+			/*System.out.println("Esperando execução do script");
+			Thread.sleep(15000);
 			
 			for (int i = 0; i < objs.length; i++) {
 				System.out.println(objs[i]);
 				System.out.println("Pós teste do Friedman");
-				pre.executarFriedman(dirEntrada, dirSaida, problema, objs[i], algs, exec, metodo, "gd", null);
-			}	
+				pre.executarFriedman(dirEntrada, dirSaida, problema, objs[i], algs, exec, metodo, ind, null);
+			}*/	
 
 			
 			//pre.inverterMaxMim(dir, problema, objetivo, algs, exec, metodo);
@@ -1008,7 +1023,7 @@ public double maiorValor(String dir, String problema, int objetivo, String[] alg
 			//pre.preparArquivosComandosFriedman(dir, dir2,  problema, ""+objetivo, algs, exec, metodo, "pnf");
 			//pre.preparArquivosComandosFriedman(dir, dir2,  problema, ""+objetivo, algs, exec, metodo, "np");
 			
-			*/
+			
 
 		} catch (Exception ex){ex.printStackTrace();}
 		

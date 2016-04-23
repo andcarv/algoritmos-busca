@@ -113,7 +113,7 @@ public abstract class Indicador {
 				}
 			} else{
 				calcularFronteira = true;
-				String[] valores = line.split("\t");
+				String[] valores = line.split(" ");
 				if(valores.length<m){
 					System.err.println("Arquivo contem fronteiras com menos objetivos (" + valores.length + ") do que passado como parametro (" + m + ")");
 					System.exit(0);
@@ -169,7 +169,7 @@ public abstract class Indicador {
 		psIndGeral = new PrintStream(caminhoSaida + idExecucao  + "_" + indicador +".txt");
 		psIndComando = new PrintStream(caminhoSaida+ idExecucao + "_" + indicador +"_comando.txt");
 		comando = new StringBuffer();
-		comando.append(idExecucao + "_" + indicador +"<- c(");
+		comando.append(idExecucao.replace('-', '_') + "_" + indicador +"<- c(");
 	}
 	
 	/**
