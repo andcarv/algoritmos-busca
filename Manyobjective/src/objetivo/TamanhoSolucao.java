@@ -10,8 +10,8 @@ public class TamanhoSolucao extends FuncaoObjetivo {
 		if(solucao.isBinaria()){
 			SolucaoBinaria bin = (SolucaoBinaria) solucao;
 			for (int i = 0; i < bin.getVariaveis().length; i++) {
-				String valor = bin.getVariavel(i);
-				if(valor.equals("1"))
+				int valor = bin.getVariavel(i);
+				if(valor == 1)
 					tamanho++;
 			}
 		}

@@ -81,6 +81,8 @@ public abstract class Solucao {
 	//Metodo que gera uma solucao aleatorio
 	public abstract void iniciarSolucaoAleatoria();
 	
+	
+	public abstract Object clone();
 	/**
 	 * M�todo que c�lcula o vetor sigma de acordo com a f�rmula proposta por Mostaghim
 	 * @return Vetor sigma

@@ -57,7 +57,7 @@ public class InitializeRandomPreserve extends InitializeSwarms {
 				for (Iterator<Particula> iterator = swarm.populacao.iterator(); iterator
 						.hasNext();) {
 					Particula particle = (Particula) iterator.next();
-					SolucaoNumerica preserved = particle.solucao;
+					SolucaoNumerica preserved = (SolucaoNumerica)particle.solucao;
 					preserved.setLimites(new_limits);
 					preserved.truncar();
 					problema.calcularObjetivos(preserved);

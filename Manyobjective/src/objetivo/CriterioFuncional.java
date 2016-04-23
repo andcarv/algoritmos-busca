@@ -18,17 +18,17 @@ public class CriterioFuncional extends Criterios {
 	 */
 	public double calcularObjetivo(Solucao solucao) {
 		SolucaoBinaria sol = (SolucaoBinaria) solucao;
-		String[] stringBinaria = sol.getVariaveis();
+		int[] stringBinaria = sol.getVariaveis();
 		//Percorre os casos de teste da solucao e marcar todos os criterios que a solucao cobriu
 		int[] vetorCombinado = new int[dados[0].length];
 		for (int i = 0; i < stringBinaria.length; i++) {
-			if(stringBinaria[i].equals("1")){
+			if(stringBinaria[i]==1){
 				int[] vetorTesteI = dados[i];
 				OR(vetorCombinado, vetorTesteI, vetorCombinado);
 			}
 		}
 		
-		//Calcula quantos criterios foram cobertos pela solucao em relação ao total de critérios.
+		//Calcula quantos criterios foram cobertos pela solucao em relaï¿½ï¿½o ao total de critï¿½rios.
 		double cont = 0;
 		for (int i = 0; i < vetorCombinado.length; i++) {
 			if(vetorCombinado[i] == 1)
@@ -42,11 +42,11 @@ public class CriterioFuncional extends Criterios {
 	public static void main(String[] args) {
 		SolucaoBinaria bin = new SolucaoBinaria(5, 4);
 		
-		bin.setVariavel(0, "1");
-		bin.setVariavel(1, "1");
-		bin.setVariavel(2, "1");
-		bin.setVariavel(4, "0");
-		bin.setVariavel(3, "0");
+		bin.setVariavel(0, 1);
+		bin.setVariavel(1, 1);
+		bin.setVariavel(2, 1);
+		bin.setVariavel(4, 0);
+		bin.setVariavel(3, 0);
 		
 		String arquivoArcos = "E:\\Andre\\ES\\arcos_schedule2.txt";
 		String c = "arcos";

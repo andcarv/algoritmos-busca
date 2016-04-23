@@ -46,6 +46,9 @@ public abstract class Problema {
 	public double MAX_VALUE;
 	public double MIN_VALUE;
 	
+	
+	public Problema(){}
+	
 	public Problema(int m){
 			
 		this.m = m;
@@ -74,7 +77,7 @@ public abstract class Problema {
 	
 	public abstract double[] calcularObjetivos(Solucao solucao);
 	
-	public abstract ArrayList<SolucaoNumerica> obterFronteira(int n, int numSol);
+	public ArrayList<SolucaoNumerica> obterFronteira(int n, int numSol){return null;}
 	
 	/**
 	 * Método que gera a próxima solução através do incremento passado no construtor

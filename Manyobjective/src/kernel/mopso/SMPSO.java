@@ -206,14 +206,12 @@ public class SMPSO extends MOPSO{
 		for (Iterator<Particula> iter = populacao.iterator(); iter.hasNext();) {
 			Particula particula = (Particula) iter.next();
 			//Calcula a nova velocidade
-			
-			//particula.calcularNovaVelocidade();
-			particula.calcularNovaVelocidadeConstriction();
-			//particula.calcularNovaVelocidade();
+			particula.calcularNovaVelocidadejMetal();
+						
 			//Calcula a nova posicao
 			particula.calcularNovaPosicao();
 			if(particula.mutacao){
-				mutacaoPolinomial(PROB_MUT_COD,particula.posicao);
+				mutacaoPolinomial(PROB_MUT_COD,particula.posicao, particula.limitesPosicaoInferior, particula.limitesPosicaoSuperior);
 				particula.mutacao = false;
 			}
 			
@@ -235,14 +233,7 @@ public class SMPSO extends MOPSO{
 		
 		
 		calcularCrowdingDistance(pareto.getFronteira(), problema.m);
-
-		//filter();
-		//System.out.print (pareto.getFronteira().size()  + " - ");
 		
-		//populacaoNoRepositorio();
-		
-		//System.out.println(pareto.getFronteira().size());
-
 		//Escolhe os novos melhores globais
 		escolherLider.escolherLideres(populacao, pareto.getFronteira());
 		

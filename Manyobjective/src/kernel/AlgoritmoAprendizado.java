@@ -513,7 +513,7 @@ public abstract class AlgoritmoAprendizado {
 	 * @param prob_mutacao Probabilidade de efetuar a muta��o em uma posi��o
 	 * @param vetor1 Vetor que ir� sofre a muta��o
 	 */
-	public void mutacaoPolinomial(double prob_mutacao, double[] vetor1){
+	public void mutacaoPolinomial2(double prob_mutacao, double[] vetor1){
 		for (int i = 0; i < vetor1.length; i++) {
 			double pos = vetor1[i];
 			double prob = Math.random();
@@ -529,6 +529,51 @@ public abstract class AlgoritmoAprendizado {
 			} else
 				delta = 0;
 			vetor1[i] = Math.max(0,pos + delta*MAX_MUT); 
+		}
+	}
+	/**
+	 * Codigo adaptado do jMetal
+	 * @param prob_mutacao
+	 * @param vetor1
+	 */
+	public void mutacaoPolinomial(double prob_mutacao, double[] vetor1, double[] lInf, double[] lSup){
+		double rnd, delta1, delta2, mutPow, deltaq;
+		double y, yl, yu, val, xy;
+		double   distributionIndex = 20.0;
+
+		for (int i = 0; i < vetor1.length; i++) {
+			if (Math.random() <= prob_mutacao) {
+				y = vetor1[i];
+				yl = 0.0;
+				yu = 1.0;
+				if (yl == yu) {
+					y = yl ;
+				} else {
+					delta1 = (y - yl) / (yu - yl);
+					delta2 = (yu - y) / (yu - yl);
+					rnd = Math.random();
+					mutPow = 1.0 / (distributionIndex + 1.0);
+					if (rnd <= 0.5) {
+						xy = 1.0 - delta1;
+						val = 2.0 * rnd + (1.0 - 2.0 * rnd) * (Math.pow(xy, distributionIndex + 1.0));
+						deltaq = Math.pow(val, mutPow) - 1.0;
+					} else {
+						xy = 1.0 - delta2;
+						val = 2.0 * (1.0 - rnd) + 2.0 * (rnd - 0.5) * (Math.pow(xy, distributionIndex + 1.0));
+						deltaq = 1.0 - Math.pow(val, mutPow);
+					}
+					y = y + deltaq * (yu - yl);
+
+					if (y < lInf[i]) {
+						y = lInf[i] ;
+					}
+					if (y > lSup[i]) {
+						y = lSup[i];
+					}
+
+				}
+				vetor1[i] = y;
+			}
 		}
 	}
 	
@@ -879,6 +924,13 @@ public abstract class AlgoritmoAprendizado {
 	 *  pub = unbound, todas as solucoes entram
 	 */
 	public void setArchiver(String archiveType){
+		if(archiveType.contains(";")){
+			String[] arch_split = archiveType.split(";");
+			archiveType=arch_split[0];
+		}
+		
+		
+		
 		if(archiveType == null || archiveType.equals("") || archiveType.equals("null"))
 			archiver = null;
 		else{

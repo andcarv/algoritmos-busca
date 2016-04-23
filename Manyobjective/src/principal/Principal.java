@@ -43,6 +43,7 @@ import problema.DTLZ4;
 import problema.DTLZ5;
 import problema.DTLZ6;
 import problema.DTLZ7;
+import problema.Knapsack;
 import problema.Problema;
 import problema.TestCaseSelection;
 import problema.ZDT1;
@@ -647,49 +648,61 @@ public class Principal {
 	
 	
 	public void setProblema(){
-		prob = prob.toUpperCase();
+		prob = prob.toUpperCase().trim();
 		if(prob.equals("TESTSELECTION")){
 			problema = new TestCaseSelection(m, funcoesobjetivo, programaes, dirExec, numeroCasosTeste);
 			tipoSolucao = "binaria";
 			n = numeroCasosTeste;
 		} else{
-		tipoSolucao = "numerica";
-		if(prob.equals("DTLZ1"))
-			problema = new DTLZ1(m,k);
-		if(prob.equals("DTLZ2"))
-			problema = new DTLZ2(m,k);
-		if(prob.equals("DTLZ3"))
-			problema = new DTLZ3(m,k);
-		if(prob.equals("DTLZ4"))
-			problema = new DTLZ4(m,k);
-		if(prob.equals("DTLZ5"))
-			problema = new DTLZ5(m,k);
-		if(prob.equals("DTLZ6"))
-			problema = new DTLZ6(m,k);
-		if(prob.equals("DTLZ7"))
-			problema = new DTLZ7(m,k);
-		if(prob.equals("ZTD1")){
-			problema = new ZDT1();
-			n = 30;
-			m = 2;
+
+
+			if(prob.equals("KNAP")){
+				tipoSolucao = "binaria";
+				problema = new Knapsack();
+			} else{
+
+
+
+				tipoSolucao = "numerica";
+				if(prob.equals("DTLZ1"))
+					problema = new DTLZ1(m,k);
+				if(prob.equals("DTLZ2"))
+					problema = new DTLZ2(m,k);
+				if(prob.equals("DTLZ3"))
+					problema = new DTLZ3(m,k);
+				if(prob.equals("DTLZ4"))
+					problema = new DTLZ4(m,k);
+				if(prob.equals("DTLZ5"))
+					problema = new DTLZ5(m,k);
+				if(prob.equals("DTLZ6"))
+					problema = new DTLZ6(m,k);
+				if(prob.equals("DTLZ7"))
+					problema = new DTLZ7(m,k);
+				if(prob.equals("ZTD1")){
+					problema = new ZDT1();
+					n = 30;
+					m = 2;
+				}
+				if(prob.equals("ZTD2")){
+					problema = new ZDT2();
+					n = 30;
+					m = 2;
+				}
+				if(prob.equals("ZTD3")){
+					problema = new ZDT3();
+					n = 30;
+					m = 2;
+				}
+				if(prob.equals("WFG1")){
+					problema = new WFG1(k, l, m);
+				}
+				if(prob.equals("WFG2")){
+					problema = new WFG2(k, l, m);
+				}
+
+			}
 		}
-		if(prob.equals("ZTD2")){
-			problema = new ZDT2();
-			n = 30;
-			m = 2;
-		}
-		if(prob.equals("ZTD3")){
-			problema = new ZDT3();
-			n = 30;
-			m = 2;
-		}
-		if(prob.equals("WFG1")){
-			problema = new WFG1(k, l, m);
-		}
-		if(prob.equals("WFG2")){
-			problema = new WFG2(k, l, m);
-		}
-		}
+		
 		this.n = problema.n;
 	}
 	

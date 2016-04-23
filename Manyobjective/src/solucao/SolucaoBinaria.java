@@ -4,13 +4,12 @@ import java.util.Random;
 
 public class SolucaoBinaria extends Solucao {
 
-	private String[] variaveis;
+	private int[] variaveis;
 	
 	
 	public SolucaoBinaria(int n, int m){
 		super(n,m);
-		
-		variaveis = new String[n];
+		variaveis = new int[n];
 	}
 	
 	@Override
@@ -18,21 +17,22 @@ public class SolucaoBinaria extends Solucao {
 		Random rand = new Random();
 		rand.setSeed(System.currentTimeMillis());
 		for(int i = 0; i<n; i++){
-			String valor = "" + (Math.abs(rand.nextInt())%2);
-			variaveis[i] = valor;
+			variaveis[i] = rand.nextInt()%2;
 		}
 
 	}
 	
-	public void setVariavel(int i, String valor){	
+	public void setVariavel(int i, int valor){	
+		if(valor!=0 && valor!=1)
+			System.err.println("Valor nao eh binario");
 		variaveis[i] = valor;
 	}
 	
-	public String getVariavel(int i){
+	public int getVariavel(int i){
 		return variaveis[i];
 	}
 	
-	public String[] getVariaveis(){
+	public int[] getVariaveis(){
 		return variaveis;
 	}
 	
@@ -97,10 +97,10 @@ public class SolucaoBinaria extends Solucao {
 		for (int i = 0; i < variaveis.length; i++) {
 			double prob = Math.random();
 			if(prob<prob_mutacao){
-				if(variaveis[i].equals("0"))
-						variaveis[i] = "1";
+				if(variaveis[i] == 0)
+						variaveis[i] = 1;
 				else
-					variaveis[i] = "0";
+					variaveis[i] = 0;
 			}
 		}	
 	}

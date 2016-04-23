@@ -31,11 +31,11 @@ public class Tempo extends FuncaoObjetivo {
 	@Override
 	public double calcularObjetivo(Solucao solucao) {
 		SolucaoBinaria sol = (SolucaoBinaria) solucao;
-		String[] stringBinaria = sol.getVariaveis();
+		int[] stringBinaria = sol.getVariaveis();
 		
 		long tempoTotal = 0;
 		for (int i = 0; i < stringBinaria.length; i++) {
-			if(stringBinaria[i].equals("1")){
+			if(stringBinaria[i] == 1){
 				tempoTotal+=tempo[i];
 			}
 		}

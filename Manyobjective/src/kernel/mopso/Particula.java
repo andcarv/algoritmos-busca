@@ -1,8 +1,11 @@
 package kernel.mopso;
 
+import java.util.Random;
+
 import pareto.FronteiraPareto;
 import problema.Problema;
 import solucao.Solucao;
+import solucao.SolucaoBinaria;
 import solucao.SolucaoNumerica;
 
 
@@ -14,7 +17,7 @@ import solucao.SolucaoNumerica;
 public class Particula {
 	
 	//Solu��o a qual a part�cula representa
-	public SolucaoNumerica solucao = null;
+	public Solucao solucao = null;
 	//Velocidade atual da part�cula
 	public double[] velocidade = null;
 	//Posi��o atual da part�cula
@@ -230,6 +233,60 @@ public class Particula {
 		
 	}
 	
+	public void calcularNovaVelocidadejMetal(){
+		double r1, r2, c1, c2, cMin, weightMax, weightMin;
+		double wmax, wmin;
+			    
+	    cMin = 1.5;
+	    
+	    weightMax = 0.1;
+	    weightMin = 0.1;
+	    
+	    Random rand = new Random();
+	    rand.setSeed(System.currentTimeMillis());
+	    
+
+		r1 = rand.nextDouble();
+		r2 = rand.nextDouble();
+		c1 = (rand.nextDouble() + cMin);
+		c2 = (rand.nextDouble() + cMin);
+		wmax = weightMax;
+		wmin = weightMin;
+
+		for (int var = 0; var < posicao.length ; var++) {
+			velocidade[var] = constrictionCoefficient(c1, c2) * (
+					wmax * velocidade[var] +
+					c1 * r1 * (localBest[var] - posicao[var]) +
+					c2 * r2 * (globalBest[var] - posicao[var]));
+		}
+				
+		for (int i = 0; i < velocidade.length; i++) {
+			double deltai = (limitesMaxVelSup[i]-limitesMaxVelInf[i])/2;
+			if(velocidade[i]>deltai)
+				velocidade[i] = deltai;
+			else{
+				if(velocidade[i]<=(deltai*-1))
+					velocidade[i] = deltai*-1;
+			}
+			
+		}	
+		
+		
+	}
+	
+	
+	private double constrictionCoefficient(double c1, double c2) {
+	    double rho = c1 + c2;
+	    if (rho <= 4) {
+	      return 1.0;
+	    } else {
+	      return 2 / (2 - rho - Math.sqrt(Math.pow(rho, 2.0) - 4.0 * rho));
+	    }
+	  }
+	
+	
+
+	
 	/**
 	 * M�todo de c�lculo da velocidade com limita��o do valor da velocidade
 	 * Utilizado no algoritmo SMOPSO
@@ -279,36 +336,69 @@ public class Particula {
 	 *
 	 */
 	public void calcularNovaPosicao(){
-		posicao = soma(posicao, velocidade, 1);
 		
+		if(solucao.isNumerica()){
+			posicao = soma(posicao, velocidade, 1);
+			for (int i = 0; i < posicao.length; i++) {
+				((SolucaoNumerica)solucao).setVariavel(i, posicao[i]);
+			}
+		}
+		
+		if(solucao.isBinaria())
+			;
 		/*for (int i = 0; i < posicao.length; i++) {
 			solucao.variaveis[i] = posicao[i];
 		}*/
 	}
+	
+	/**
+	 * Update binary solutions. Using sigmoid
+	 * @param solBin
+	 */
+	public void atualizarPosicaBinaria(SolucaoBinaria solBin){
+		Random rand = new Random(System.currentTimeMillis());
+		for (int i = 0; i < velocidade.length; i++) {
+			velocidade[i] = 1.0/( 1.0 + Math.pow(Math.E,(-1*velocidade[i])));
+			if(velocidade[i]>rand.nextDouble())
+				posicao[i] = 1.0;
+			else
+				posicao[i] = 0.0;
+			
+			solBin.setVariavel(i, (int)posicao[i]);
+			
+		}
+		
+		
+	}
+	
+	
+	
 
 	
 	/**
 	 * M�todo que trunca os valores da posi��o da part�cula caso eles extrapolem os limites
 	 */
 	public void truncar() {
-	
-		for (int i = 0; i < posicao.length; i++) {
-			solucao.setVariavel(i, posicao[i]);
-		}
-		
-		boolean over_limits = solucao.truncar();
-		
-		for (int i = 0; i < posicao.length; i++) {
-			 posicao[i] = solucao.getVariavel(i);
-		}
-		
-		//Caso algum limite seja extrapolado, a velocidade eh reduzida em 0.001
-		if(over_limits){
-			for (int i = 0; i < velocidade.length; i++) {
-				velocidade[i] = velocidade[i] * REDUCAO_VELOCIDAE;
-				
+
+		if(solucao.isNumerica()){
+
+			boolean over_limits = ((SolucaoNumerica)solucao).truncar();
+			solucao.arredondar();
+
+			for (int i = 0; i < posicao.length; i++) {
+				posicao[i] = ((SolucaoNumerica)solucao).getVariavel(i);
+			}
+
+			//Caso algum limite seja extrapolado, a velocidade eh reduzida em 0.001
+			if(over_limits){
+				for (int i = 0; i < velocidade.length; i++) {
+					velocidade[i] = velocidade[i] * REDUCAO_VELOCIDAE;
+
+				}
 			}
 		}
+		
+		
 	}
 
 	/**
@@ -471,15 +561,15 @@ public class Particula {
 			}
 		}
 		
-		novaParticula.solucao = (SolucaoNumerica)solucao.clone();
+		novaParticula.solucao = (Solucao)solucao.clone();
 		problema.calcularObjetivos(solucao);
 		
 		return novaParticula;
 	}
 	
-	public void atualizarSolucao(){
+	public void atualizarSolucao2(){
 		for (int i = 0; i < posicao.length; i++) {
-			solucao.setVariavel(i, posicao[i]);
+			((SolucaoNumerica)solucao).setVariavel(i, posicao[i]);
 		}
 	}
 	
