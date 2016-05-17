@@ -31,7 +31,7 @@ public class Tempo extends FuncaoObjetivo {
 	@Override
 	public double calcularObjetivo(Solucao solucao) {
 		SolucaoBinaria sol = (SolucaoBinaria) solucao;
-		int[] stringBinaria = sol.getVariaveis();
+		double[] stringBinaria = sol.getVariaveis();
 		
 		long tempoTotal = 0;
 		for (int i = 0; i < stringBinaria.length; i++) {

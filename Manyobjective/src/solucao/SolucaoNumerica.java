@@ -9,7 +9,7 @@ package solucao;
 public class SolucaoNumerica extends Solucao {
 	
 	//Array contendo as variaves da solucao
-	private double[] variaveis;
+	
 	
 	//Variaveis utilizadas para o c�lculo dos objetivos dos problemas DTLZ
 	//public double[] xm;
@@ -230,9 +230,6 @@ public class SolucaoNumerica extends Solucao {
 		return variaveis[i];
 	}
 	
-	public double[] getVariaveis(){
-		return variaveis;
-	}
 	
 	public void setVariaveis(double[] var){
 		variaveis = var;

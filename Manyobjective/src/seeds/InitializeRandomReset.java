@@ -29,7 +29,7 @@ public class InitializeRandomReset extends InitializeSwarms {
 			
 			int index_guide = (int)(Math.random() * solutions.size());
 			//Get the centroid guide for the swarm i
-			double[] centroid = ((SolucaoNumerica)solutions.get(index_guide)).getVariaveis();
+			double[] centroid = (solutions.get(index_guide)).getVariaveis();
 			for(int j = 0; j<problema.n; j++){
 				//Defines the lower and upper limits of the new search space. The values can't overcome the maximum values
 				//of the search space of the problem

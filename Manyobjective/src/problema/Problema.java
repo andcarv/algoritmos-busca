@@ -37,6 +37,8 @@ public abstract class Problema {
 	
 	public double s;
 	
+	public String tipoSolucao;
+	
 	public String[] maxmim;
 	
 	public boolean r;
@@ -47,7 +49,7 @@ public abstract class Problema {
 	public double MIN_VALUE;
 	
 	
-	public Problema(){}
+	public Problema(){ }
 	
 	public Problema(int m){
 			
@@ -64,6 +66,7 @@ public abstract class Problema {
 		MAX_VALUE = 1;
 		MIN_VALUE = 0;
 		
+		
 	}
 	
 	public Problema(int m, double inc){
@@ -72,6 +75,7 @@ public abstract class Problema {
 		avaliacoes = 0;
 		
 		this.inc = inc;
+	
 		
 	}
 	

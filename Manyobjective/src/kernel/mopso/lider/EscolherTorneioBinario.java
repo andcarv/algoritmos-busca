@@ -29,11 +29,11 @@ public class EscolherTorneioBinario extends EscolherLider {
 		Solucao solucao1 = repositorio.get(indice1);
 		Solucao solucao2 = repositorio.get(indice2);
 		if(solucao1.crowdDistance>solucao2.crowdDistance){
-			particula.globalBest = ((SolucaoNumerica)solucao1).getVariaveis();
+			particula.globalBest = solucao1.getVariaveis();
 			particula.globalBestSolucao = solucao1;
 		}
 		else{
-			particula.globalBest = ((SolucaoNumerica)solucao2).getVariaveis();
+			particula.globalBest = solucao2.getVariaveis();
 			particula.globalBestSolucao = solucao2;
 		}
 	}

@@ -137,7 +137,7 @@ public class FronteiraPareto {
 
 			int comp;
 
-			ArrayList<SolucaoNumerica> cloneFronteira = (ArrayList<SolucaoNumerica>)front.clone();
+			ArrayList<Solucao> cloneFronteira = (ArrayList<Solucao>)front.clone();
 
 			double[] novosObjetivosSolucao = new double[solucao.objetivos.length];
 			if(S!=0.5 && S>=0.25){
@@ -151,8 +151,8 @@ public class FronteiraPareto {
 				//System.out.println();
 			}
 
-			for (Iterator<SolucaoNumerica> iter = cloneFronteira.iterator(); iter.hasNext();) {
-				SolucaoNumerica temp = (SolucaoNumerica) iter.next();
+			for (Iterator<Solucao> iter = cloneFronteira.iterator(); iter.hasNext();) {
+				Solucao temp = iter.next();
 
 				double[] novosObjetivosTemp = new double[temp.objetivos.length];
 

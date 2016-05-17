@@ -9,6 +9,8 @@ package solucao;
 public abstract class Solucao {
 	
 	
+	protected double[] variaveis;
+	
 	public int n, m;
 	
 	public double[] objetivos;
@@ -101,6 +103,14 @@ public abstract class Solucao {
 		
 		return sigmaVector;
 		
+	}
+	
+	public double[] getVariaveis(){
+		return variaveis;
+	}
+	
+	public double getVariavel(int i){
+		return variaveis[i];
 	}
 	
 	/**

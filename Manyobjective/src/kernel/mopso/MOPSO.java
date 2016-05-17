@@ -13,6 +13,7 @@ import rank.AverageRank;
 import rank.BalancedRank;
 import solucao.ComparetorObjetivo;
 import solucao.Solucao;
+import solucao.SolucaoBinaria;
 import solucao.SolucaoNumerica;
 import kernel.AlgoritmoAprendizado;
 import kernel.mopso.lider.EscolherAleatorio;
@@ -183,14 +184,20 @@ public abstract class MOPSO extends AlgoritmoAprendizado{
 			//Contador utilizada para a cria��o da regra n�o ficar presa no la�o
 			int cont = 0;
 			do{
-				SolucaoNumerica s = new SolucaoNumerica(n, problema.m);
+				Solucao s = null;
+				
+				if(problema.problema.equals("knapsack"))
+					s = new SolucaoBinaria(n, problema.m);
+				else
+					s = new SolucaoNumerica(n, problema.m);
 				
 				for (int j = 0; j < used_objectives.length; j++) {
 					s.used_objectives[j] = used_objectives[j];
 				}
 				
 				s.iniciarSolucaoAleatoria();
-				s.truncar();
+				if(s.isNumerica())
+					((SolucaoNumerica)s).truncar();
 				particula.iniciarParticulaAleatoriamente(problema, s);
 				problema.calcularObjetivos(s);
 				cont++;

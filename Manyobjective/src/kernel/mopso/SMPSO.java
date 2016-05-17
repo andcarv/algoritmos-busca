@@ -207,7 +207,6 @@ public class SMPSO extends MOPSO{
 			Particula particula = (Particula) iter.next();
 			//Calcula a nova velocidade
 			particula.calcularNovaVelocidadejMetal();
-						
 			//Calcula a nova posicao
 			particula.calcularNovaPosicao();
 			if(particula.mutacao){

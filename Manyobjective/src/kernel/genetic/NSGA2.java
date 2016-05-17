@@ -219,7 +219,7 @@ public class NSGA2 extends AlgoritmoAprendizado {
 		
 		
 		for (int i = pontoJuncao; i < solucao2.n; i++) {
-			novaSolucao.setVariavel(i,  solucao2.getVariavel(i));
+			novaSolucao.setVariavel(i,  (int)solucao2.getVariavel(i));
 		}
 		
 		return novaSolucao;

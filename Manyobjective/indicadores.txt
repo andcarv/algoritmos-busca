@@ -1,6 +1,7 @@
-m = 2
+algorithm = MOEAD-DRA
+problem = DTLZ1
+m = 3
 max_min = -
-direxec = /home/andrebc/workspace/Manyobjective/
+direxec = /home/andre/experimentos/hmulti/
 indicador = gd
-front = smopso_DTLZ2_3_0.5_NWSum_ideal_fronts
-true_pareto = /home/andrebc/workspace/Manyobjective/pareto/DTLZ2_2_pareto.txt
+

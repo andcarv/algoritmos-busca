@@ -70,9 +70,18 @@ public class Particula {
 	 * M�todo que inicializa a particula de forma aleatoria
 	 * 
 	 */
-	public void iniciarParticulaAleatoriamente(Problema prob, SolucaoNumerica s){
+	public void iniciarParticulaAleatoriamente(Problema prob, Solucao s){
 		solucao = s;
-		posicao = localBest = s.getVariaveis();
+		
+		if(s.isNumerica())
+			posicao = localBest = ((SolucaoNumerica)s).getVariaveis();
+		else{
+			SolucaoBinaria sb = (SolucaoBinaria) s;
+			posicao = localBest = new double[prob.n];
+			for (int i = 0; i < sb.getVariaveis().length; i++) {
+				posicao[i] = localBest[i] = sb.getVariavel(i);
+			}
+		}
 		velocidade = new double[posicao.length];
 		inicializarVelocidadeAleatoria();
 			

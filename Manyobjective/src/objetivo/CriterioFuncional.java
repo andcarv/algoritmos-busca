@@ -18,7 +18,7 @@ public class CriterioFuncional extends Criterios {
 	 */
 	public double calcularObjetivo(Solucao solucao) {
 		SolucaoBinaria sol = (SolucaoBinaria) solucao;
-		int[] stringBinaria = sol.getVariaveis();
+		double[] stringBinaria = sol.getVariaveis();
 		//Percorre os casos de teste da solucao e marcar todos os criterios que a solucao cobriu
 		int[] vetorCombinado = new int[dados[0].length];
 		for (int i = 0; i < stringBinaria.length; i++) {

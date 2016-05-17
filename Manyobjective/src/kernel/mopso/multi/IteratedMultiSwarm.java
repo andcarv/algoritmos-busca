@@ -219,7 +219,7 @@ public class IteratedMultiSwarm extends AlgoritmoAprendizado {
 				PrintStream psTemp = new PrintStream("solucoes.txt");
 				for (Iterator<Solucao> iterator = initial_front.iterator(); iterator
 						.hasNext();) {
-					SolucaoNumerica solucao = (SolucaoNumerica) iterator.next();
+					Solucao solucao =  iterator.next();
 					for(int i = 0; i<problema.n; i++)
 						psTemp.print(new Double(solucao.getVariavel(i)).toString().replace('.', ',') + "\t");
 					psTemp.println();
