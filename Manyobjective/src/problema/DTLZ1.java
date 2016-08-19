@@ -148,7 +148,7 @@ public class DTLZ1 extends Problema {
 		return saida;	
 	}
 	
-	public  ArrayList<SolucaoNumerica> obterFronteiraIncremental(int n){
+	public  ArrayList<SolucaoNumerica> obterFronteiraIncremental(int n, double inc){
 		
 		ArrayList<SolucaoNumerica> melhores = new ArrayList<SolucaoNumerica>();
 		
@@ -194,7 +194,7 @@ public class DTLZ1 extends Problema {
 				melhores.add(melhor);	
 			}
 				
-			haSolucao = getProximaSolucao(solucaoBase, inicio, fim);
+			haSolucao = getProximaSolucao(solucaoBase, inicio, fim, inc);
 							
 		}
 
@@ -207,9 +207,9 @@ public class DTLZ1 extends Problema {
 	public static void main(String[] args) {
 		
 
-		int[] ms = {2,3,5,10,15,20,25,30};
-		int numSol = 10000;
-		int k = 10;
+		int[] ms = {4,5,6,7,8,9};
+		int numSol = 100000;
+		int k = 5;
 		
 		System.out.println("DTLZ1");
 		for (int i = 0; i < ms.length; i++) {

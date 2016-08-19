@@ -114,6 +114,62 @@ public class DTLZ4 extends Problema {
 		return solucao.objetivos;
 	}
 	
+public  ArrayList<SolucaoNumerica> obterFronteiraIncremental(int n, double inc){
+		
+		ArrayList<SolucaoNumerica> melhores = new ArrayList<SolucaoNumerica>();
+		
+		Random rand = new Random();
+		rand.setSeed(1000);
+		
+		//Indicies que indicam que variaves serão geradas incrementalmente para a geracao da fronteira
+		//O padrao dos problemas DTLZ eh entre 0 e m-2
+		int inicio = 0;
+		int fim = m-2;
+		
+		SolucaoNumerica solucaoBase = new SolucaoNumerica(n, m);
+		
+		varVez = fim;
+		
+		for (int i = 0; i < solucaoBase.getVariaveis().length; i++) {
+			solucaoBase.setVariavel(i, 0);
+		}
+		
+		boolean haSolucao = true;
+		
+		while(haSolucao){
+			
+			SolucaoNumerica melhor = (SolucaoNumerica) solucaoBase.clone();
+			
+				
+			for (int i = m-1; i <n; i++) {
+				melhor.setVariavel(i, 0.5);
+			}
+
+			/*for (int i = 0; i < m-1; i++) {
+				double newVal = rand.nextDouble();
+				melhor.setVariavel(i, newVal);
+			}*/
+
+			double somaParcial = 0;
+			calcularObjetivos(melhor);
+
+			for (int i = 0; i < melhor.m; i++) {
+				somaParcial += melhor.objetivos[i]*melhor.objetivos[i];
+			}
+			if(somaParcial==1){
+				melhores.add(melhor);	
+			}
+			//System.out.println(melhor);
+			//System.out.println(somaParcial);
+			haSolucao = getProximaSolucao(solucaoBase, inicio, fim, inc);
+							
+		}
+
+	
+		System.out.println(melhores.size());
+		return melhores;	
+	}
+	
 	public  ArrayList<SolucaoNumerica> obterFronteira(int n, int numSol){
 		ArrayList<SolucaoNumerica> melhores = new ArrayList<SolucaoNumerica>();
 		
@@ -203,10 +259,11 @@ public class DTLZ4 extends Problema {
 			DTLZ4 dtlz4 = new DTLZ4(m, k);
 			
 
-			ArrayList<SolucaoNumerica> f = dtlz4.obterFronteira(n, numSol);
+			//ArrayList<SolucaoNumerica> f = dtlz4.obterFronteira(n, numSol);
+			ArrayList<SolucaoNumerica> f = dtlz4.obterFronteiraIncremental(n, 0.0005);
 
 			try{
-				PrintStream ps = new PrintStream("pareto3/DTLZ4_" + m + "_pareto.txt");
+				PrintStream ps = new PrintStream("pareto2/DTLZ4_" + m + "_pareto.txt");
 				for (Iterator<SolucaoNumerica> iterator = f.iterator(); iterator.hasNext();) {
 					SolucaoNumerica solucaoNumerica = (SolucaoNumerica) iterator
 					.next();

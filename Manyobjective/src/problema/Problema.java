@@ -32,7 +32,6 @@ public abstract class Problema {
 	
 	public  double[] lambda = null;
 	
-	public double inc;
 	public int varVez;
 	
 	public double s;
@@ -69,15 +68,6 @@ public abstract class Problema {
 		
 	}
 	
-	public Problema(int m, double inc){
-		
-		this.m = m;
-		avaliacoes = 0;
-		
-		this.inc = inc;
-	
-		
-	}
 	
 	public abstract double[] calcularObjetivos(Solucao solucao);
 	
@@ -90,7 +80,7 @@ public abstract class Problema {
 	 * @param inicio
 	 * @param fim
 	 */
-	public boolean getProximaSolucao(SolucaoNumerica solucaoBase, int inicio, int fim){
+	public boolean getProximaSolucao(SolucaoNumerica solucaoBase, int inicio, int fim, double inc){
 		
 		/*int decimalPlace = 7;
 		
@@ -102,7 +92,7 @@ public abstract class Problema {
 		
 		
 		Double valVarVez = new Double(solucaoBase.getVariavel(varVez));
-
+	
 		valVarVez=valVarVez+inc;
 		
 		//Double valVarVez = new Double(valVarVezBig.toString());
